@@ -356,9 +356,6 @@ async function procesarFoto() {
     compuesto.style.display = 'none';
     document.body.appendChild(compuesto);
 
-    setProgress(88, 'Generando versión Stories...');
-    renderizarPreviews(compuesto, fondo.url);
-
     setProgress(100, '¡Lista!');
 
     var guestLink = GUEST_URL + '?foto=' + estado.fotoActual.id + '&bg=' + estado.fondoIdx;
