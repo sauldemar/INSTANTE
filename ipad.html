@@ -4,535 +4,368 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Instante · iPad</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; overflow: hidden; font-family: 'DM Sans', sans-serif; background: #faf9f6; color: #0d0d0b; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes breathe { 0%,100% { transform: scale(1); opacity:.7; } 50% { transform: scale(1.04); opacity:1; } }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:#faf9f6;color:#0d0d0b}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.04);opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 
-.page { display: none; width: 100%; height: 100vh; }
-.page.active { display: flex; flex-direction: column; animation: fadeIn 0.3s ease; }
+.page{display:none;width:100%;height:100vh;flex-direction:column}
+.page.active{display:flex;animation:fadeIn 0.3s ease}
 
-/* HEADER */
-.hdr { display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; border-bottom: 1px solid rgba(13,13,11,0.1); flex-shrink: 0; }
-.brand { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; }
-.brand-dot { color: #c9a84c; }
-.evname { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #7a7a72; }
-.dots { display: flex; gap: 5px; }
-.dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(13,13,11,0.2); transition: all 0.3s; }
-.dot.on { background: #0d0d0b; width: 18px; border-radius: 3px; }
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid rgba(13,13,11,0.1);flex-shrink:0}
+.brand{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase}
+.brand-dot{color:#c9a84c}
+.evname{font-size:14px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7a72}
+.dots{display:flex;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(13,13,11,0.2);transition:all 0.3s}
+.dot.on{background:#0d0d0b;width:22px;border-radius:4px}
 
-/* ESPERA */
-#page-wait .body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 40px; }
-.wait-icon { width: 72px; height: 72px; border: 1px solid rgba(13,13,11,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; animation: breathe 3s ease-in-out infinite; }
-.wait-title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; text-align: center; line-height: 1.2; letter-spacing: -0.5px; }
-.wait-sub { font-size: 13px; color: #7a7a72; text-align: center; }
-.wait-pulse { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #b0b0a6; letter-spacing: 0.08em; text-transform: uppercase; }
-.pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: #c9a84c; animation: pulse 1.8s ease-in-out infinite; }
-.stats-box { display: flex; gap: 32px; border: 1px solid rgba(13,13,11,0.1); border-radius: 14px; padding: 18px 32px; }
-.stat { text-align: center; }
-.stat-n { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 300; letter-spacing: -1px; }
-.stat-l { font-size: 10px; color: #7a7a72; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+/* WAIT */
+#pw .body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:48px}
+.wicon{width:84px;height:84px;border:1px solid rgba(13,13,11,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;animation:breathe 3s ease-in-out infinite}
+.wtitle{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;text-align:center;line-height:1.1;letter-spacing:-1px}
+.wsub{font-size:17px;color:#7a7a72;text-align:center;line-height:1.6}
+.wpulse{display:flex;align-items:center;gap:10px;font-size:14px;color:#b0b0a6;letter-spacing:0.08em;text-transform:uppercase}
+.pdot{width:9px;height:9px;border-radius:50%;background:#c9a84c;animation:pulse 1.8s ease-in-out infinite}
+.stats{display:flex;gap:44px;border:1px solid rgba(13,13,11,0.1);border-radius:16px;padding:22px 48px}
+.stn{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;letter-spacing:-1px;text-align:center}
+.stl{font-size:13px;color:#7a7a72;letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;text-align:center}
 
-/* SELECCIÓN */
-#page-select .body { flex: 1; display: grid; grid-template-columns: 1fr 1.2fr; overflow: hidden; }
-.photo-side { background: #e8e5de; position: relative; overflow: hidden; }
-.photo-side img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.photo-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,13,11,0.4) 0%, transparent 50%); }
-.photo-label { position: absolute; bottom: 18px; left: 22px; color: rgba(255,255,255,0.85); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
-.new-badge { position: absolute; top: 14px; right: 14px; background: #c9a84c; color: #fff; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; }
-.select-side { display: flex; flex-direction: column; padding: 28px 32px; overflow-y: auto; }
-.select-title { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; line-height: 1.2; margin-bottom: 4px; letter-spacing: -0.4px; }
-.select-sub { font-size: 12px; color: #7a7a72; margin-bottom: 22px; }
-.bg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
-.bg-card { border-radius: 10px; overflow: hidden; cursor: pointer; border: 2.5px solid transparent; transition: all 0.18s; position: relative; }
-.bg-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(13,13,11,0.1); }
-.bg-card.sel { border-color: #0d0d0b; }
-.bg-card.sel::after { content: '✓'; position: absolute; top: 7px; right: 7px; width: 20px; height: 20px; background: #0d0d0b; color: #fff; border-radius: 50%; font-size: 11px; display: flex; align-items: center; justify-content: center; }
-.bg-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
-.bg-name { font-size: 10px; font-weight: 500; padding: 5px 8px; background: rgba(255,255,255,0.88); color: #0d0d0b; text-align: center; }
-.info-box { background: #f3f1ec; border: 1px solid rgba(13,13,11,0.1); border-radius: 10px; padding: 11px 14px; font-size: 12px; color: #7a7a72; line-height: 1.6; display: flex; gap: 8px; margin-bottom: 18px; }
-.btn-main { background: #0d0d0b; color: #faf9f6; border: none; border-radius: 12px; padding: 15px; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: opacity 0.15s; margin-top: auto; }
-.btn-main:disabled { opacity: 0.35; cursor: not-allowed; }
-.btn-main:not(:disabled):active { opacity: 0.8; }
+/* SELECT HORIZONTAL */
+#sh .body{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.photo-top{position:relative;background:#e8e5de;overflow:hidden;flex-shrink:0}
+.photo-top img{width:100%;height:100%;object-fit:contain;display:block;background:#e8e5de}
+.sh-label{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;padding:18px 32px 6px;flex-shrink:0}
+.sh-sub{font-size:16px;color:#7a7a72;padding:0 32px 14px;flex-shrink:0}
+.fondos-h{display:flex;gap:16px;padding:0 32px 20px;flex-shrink:0}
+.bgc{flex:1;border-radius:14px;overflow:hidden;cursor:pointer;border:3px solid transparent;transition:all 0.2s;position:relative}
+.bgc:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(13,13,11,0.12)}
+.bgc.sel{border-color:#0d0d0b}
+.bgc.sel::after{content:'✓';position:absolute;top:8px;right:8px;width:28px;height:28px;background:#0d0d0b;color:#fff;border-radius:50%;font-size:14px;display:flex;align-items:center;justify-content:center}
+.bgi{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.bgn{font-size:14px;font-weight:500;padding:9px 10px;background:rgba(255,255,255,0.93);color:#0d0d0b;text-align:center}
+.btn-ok{background:#0d0d0b;color:#faf9f6;border:none;border-radius:14px;padding:20px;font-size:16px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif;cursor:pointer;transition:opacity 0.15s;margin:0 32px 24px;flex-shrink:0}
+.btn-ok:disabled{opacity:0.35;cursor:not-allowed}
 
-/* PROCESANDO */
-#page-processing .body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; }
-.spinner { width: 44px; height: 44px; border: 1.5px solid rgba(13,13,11,0.15); border-top-color: #c9a84c; border-radius: 50%; animation: spin 0.9s linear infinite; }
-.proc-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; }
-.proc-sub { font-size: 12px; color: #7a7a72; }
-.prog-track { width: 220px; height: 2px; background: rgba(13,13,11,0.1); border-radius: 10px; overflow: hidden; }
-.prog-fill { height: 100%; background: linear-gradient(90deg, #c9a84c, #0d0d0b); border-radius: 10px; transition: width 0.3s; width: 0%; }
+/* SELECT VERTICAL */
+#sv .body{flex:1;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+.photo-left{background:#e8e5de;overflow:hidden;position:relative}
+.photo-left img{width:100%;height:100%;object-fit:contain;display:block;background:#e8e5de}
+.sel-right{display:flex;flex-direction:column;padding:28px 32px;gap:16px;border-left:1px solid rgba(13,13,11,0.1)}
+.sr-title{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;line-height:1.2;letter-spacing:-0.5px}
+.sr-sub{font-size:16px;color:#7a7a72}
+.fondos-v{display:flex;flex-direction:column;gap:12px;flex:1}
+.bgcv{border-radius:12px;overflow:hidden;cursor:pointer;border:3px solid transparent;transition:all 0.2s;position:relative;display:flex;align-items:center;gap:0;background:#f3f1ec}
+.bgcv:hover{border-color:rgba(13,13,11,0.3)}
+.bgcv.sel{border-color:#0d0d0b}
+.bgcv.sel::after{content:'✓';position:absolute;top:8px;right:10px;width:26px;height:26px;background:#0d0d0b;color:#fff;border-radius:50%;font-size:13px;display:flex;align-items:center;justify-content:center}
+.bgiv{width:90px;height:68px;object-fit:cover;flex-shrink:0;border-radius:8px;margin:8px}
+.bgnv{font-size:16px;font-weight:500;color:#0d0d0b;padding:0 12px}
+.btn-ok-v{background:#0d0d0b;color:#faf9f6;border:none;border-radius:14px;padding:18px;font-size:16px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif;cursor:pointer;transition:opacity 0.15s;flex-shrink:0}
+.btn-ok-v:disabled{opacity:0.35;cursor:not-allowed}
+
+/* PROCESSING */
+#pp .body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:48px}
+.spinner{width:56px;height:56px;border:2px solid rgba(13,13,11,0.1);border-top-color:#c9a84c;border-radius:50%;animation:spin 0.9s linear infinite}
+.ptitle{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300}
+.psub{font-size:16px;color:#7a7a72}
+.ptrack{width:300px;height:3px;background:rgba(13,13,11,0.1);border-radius:10px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,#c9a84c,#0d0d0b);border-radius:10px;transition:width 0.3s;width:0%}
 
 /* QR */
-#page-qr .body { flex: 1; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
-.qr-left { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; gap: 18px; border-right: 1px solid rgba(13,13,11,0.1); }
-.qr-lbl { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7a72; text-align: center; }
-.qr-box { background: #fff; border: 1px solid rgba(13,13,11,0.1); border-radius: 14px; padding: 14px; }
-.qr-instr { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300; color: #7a7a72; text-align: center; line-height: 1.5; }
-.qr-right { display: flex; flex-direction: column; padding: 40px; gap: 14px; }
-.qr-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; line-height: 1.2; letter-spacing: -0.3px; }
-.qr-desc { font-size: 12px; color: #7a7a72; line-height: 1.7; }
-.prev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 1; }
-.prev-item { display: flex; flex-direction: column; gap: 5px; }
-.prev-lbl { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #b0b0a6; }
-.prev-wrap { border-radius: 8px; overflow: hidden; border: 1px solid rgba(13,13,11,0.1); background: #e8e5de; }
-.prev-wrap canvas { width: 100%; display: block; }
-.prev-normal .prev-wrap { aspect-ratio: 3/4; }
-.prev-stories .prev-wrap { aspect-ratio: 9/16; }
-.btn-next { background: transparent; color: #7a7a72; border: 1px solid rgba(13,13,11,0.15); border-radius: 10px; padding: 12px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.15s; margin-top: auto; }
-.btn-next:hover { background: #f3f1ec; color: #0d0d0b; }
+#pq .body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:48px}
+.qt{font-family:'Cormorant Garamond',serif;font-size:54px;font-weight:300;text-align:center;line-height:1.1;letter-spacing:-1px}
+.qs{font-size:18px;color:#7a7a72;text-align:center;line-height:1.7}
+.qlbl{font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:#b0b0a6}
+.qbox{background:#fff;border:1px solid rgba(13,13,11,0.1);border-radius:22px;padding:24px}
+.qinstr{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:#b0b0a6;text-align:center}
 </style>
 </head>
 <body>
 
 <!-- ESPERA -->
-<div class="page active" id="page-wait">
+<div class="page active" id="pw">
   <div class="hdr">
     <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
-    <div class="evname" id="ev-wait">Cargando...</div>
+    <div class="evname" id="ev0"></div>
     <div class="dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
   </div>
   <div class="body">
-    <div class="wait-icon">📷</div>
-    <div class="wait-title">Esperando<br>fotografía</div>
-    <div class="wait-sub">El operador tomará la foto y aparecerá aquí automáticamente</div>
-    <div class="wait-pulse"><div class="pulse-dot"></div>Conectado · Escuchando</div>
-    <div class="stats-box">
-      <div class="stat"><div class="stat-n" id="w-total">0</div><div class="stat-l">Fotos tomadas</div></div>
-      <div class="stat" style="border-left:1px solid rgba(13,13,11,0.1);padding-left:32px"><div class="stat-n" id="w-done">0</div><div class="stat-l">Completadas</div></div>
+    <div class="wicon">📷</div>
+    <div class="wtitle">Esperando<br>fotografía</div>
+    <div class="wsub">El operador tomará la foto y aparecerá<br>aquí automáticamente</div>
+    <div class="wpulse"><div class="pdot"></div>Conectado · Escuchando</div>
+    <div class="stats">
+      <div><div class="stn" id="wt">0</div><div class="stl">Fotos tomadas</div></div>
+      <div style="border-left:1px solid rgba(13,13,11,0.1);padding-left:44px"><div class="stn" id="wd">0</div><div class="stl">Completadas</div></div>
     </div>
   </div>
 </div>
 
-<!-- SELECCIÓN -->
-<div class="page" id="page-select">
+<!-- SELECCIÓN HORIZONTAL -->
+<div class="page" id="sh">
   <div class="hdr">
     <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
-    <div class="evname" id="ev-select"></div>
+    <div class="evname" id="ev1"></div>
     <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
   </div>
   <div class="body">
-    <div class="photo-side">
-      <img id="select-photo" src="" alt="">
-      <div class="photo-overlay"></div>
-      <div class="photo-label" id="select-id"></div>
-      <div class="new-badge">Nueva foto</div>
-    </div>
-    <div class="select-side">
-      <div class="select-title">Elige tu<br>fondo favorito</div>
-      <div class="select-sub">Toca el fondo que más te guste</div>
-      <div class="bg-grid" id="bg-grid"></div>
-      <div class="info-box"><span>✦</span><span>Recibirás foto normal y versión para Stories de Instagram</span></div>
-      <button class="btn-main" id="btn-confirm" onclick="confirmarFondo()" disabled>Selecciona un fondo para continuar</button>
+    <div class="photo-top" style="height:42vh"><img id="ph" src="" alt=""></div>
+    <div class="sh-label">Elige tu fondo favorito</div>
+    <div class="sh-sub">Toca el fondo que más te guste</div>
+    <div class="fondos-h" id="fh"></div>
+    <button class="btn-ok" id="bh" onclick="confirmar()" disabled>Selecciona un fondo para continuar</button>
+  </div>
+</div>
+
+<!-- SELECCIÓN VERTICAL -->
+<div class="page" id="sv">
+  <div class="hdr">
+    <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
+    <div class="evname" id="ev2"></div>
+    <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="body">
+    <div class="photo-left"><img id="pv" src="" alt=""></div>
+    <div class="sel-right">
+      <div class="sr-title">Elige tu<br>fondo favorito</div>
+      <div class="sr-sub">Toca el fondo que más te guste</div>
+      <div class="fondos-v" id="fv"></div>
+      <button class="btn-ok-v" id="bv" onclick="confirmar()" disabled>Selecciona un fondo</button>
     </div>
   </div>
 </div>
 
 <!-- PROCESANDO -->
-<div class="page" id="page-processing">
+<div class="page" id="pp">
   <div class="hdr">
     <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
-    <div class="evname" id="ev-proc"></div>
+    <div class="evname" id="ev3"></div>
     <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
   </div>
   <div class="body">
     <div class="spinner"></div>
-    <div class="proc-title">Procesando fotografía</div>
-    <div class="proc-sub" id="proc-lbl">Iniciando...</div>
-    <div class="prog-track"><div class="prog-fill" id="prog"></div></div>
+    <div class="ptitle">Procesando fotografía</div>
+    <div class="psub" id="plbl">Iniciando...</div>
+    <div class="ptrack"><div class="pfill" id="pfill"></div></div>
   </div>
 </div>
 
 <!-- QR -->
-<div class="page" id="page-qr">
+<div class="page" id="pq">
   <div class="hdr">
     <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
-    <div class="evname" id="ev-qr"></div>
+    <div class="evname" id="ev4"></div>
     <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
   </div>
-  <div class="body" style="display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden">
-    <!-- Izquierda: fotos -->
-    <div style="display:flex;flex-direction:column;padding:24px 20px 24px 28px;gap:12px;overflow:hidden;border-right:1px solid rgba(13,13,11,0.1)">
-      <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#b0b0a6;font-weight:500">Foto original</div>
-      <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(13,13,11,0.1);flex:1;min-height:0;background:#e8e5de">
-        <img id="prev-original" src="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block" alt="">
-      </div>
-      <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#b0b0a6;font-weight:500">Con fondo elegante</div>
-      <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(13,13,11,0.1);flex:1;min-height:0;background:#e8e5de">
-        <img id="prev-normal" src="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block" alt="">
-      </div>
-    </div>
-    <!-- Derecha: QR -->
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 32px;gap:20px;text-align:center">
-      <div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;line-height:1.15;letter-spacing:-0.5px;margin-bottom:12px">Tu foto<br>está lista ✦</div>
-        <div style="font-size:15px;color:#7a7a72;line-height:1.7">Escanea con tu celular para<br>descargar tu fotografía</div>
-      </div>
-      <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#b0b0a6">↓ Apunta la cámara aquí</div>
-      <div style="background:#fff;border:1px solid rgba(13,13,11,0.1);border-radius:18px;padding:20px" id="qr-canvas"></div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:#b0b0a6;line-height:1.5">El QR lleva directo<br>a tu foto</div>
-      <button class="btn-next" onclick="siguienteInvitado()" style="width:100%">Siguiente invitado →</button>
-    </div>
+  <div class="body">
+    <div class="qt">Tu foto<br>está lista ✦</div>
+    <div class="qs">Escanea el código QR con tu celular<br>para descargar tu fotografía</div>
+    <div class="qlbl">↓ Apunta la cámara aquí ↓</div>
+    <div class="qbox" id="qr"></div>
+    <div class="qinstr">Acerca tu celular al código</div>
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-// ── CONFIG ──────────────────────────────
-var SB = 'https://egvtxhtfgkwfyirklkbn.supabase.co';
-var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVndnR4aHRmZ2t3Znlpcmtsa2JuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDM4NTksImV4cCI6MjA5NDcxOTg1OX0.kQ5q1nKAQ847Pm_7jsZ9-NVGKg3xRoqGpUC-PasQqQc';
-var BUCKET = 'fotos-eventos';
-var EVENT = 'fatima-ethan-2026';
-var EVENT_NAME = 'Fátima & Ethan · 30 Mayo 2026';
-var GUEST_URL = 'https://foto-eventos-seven.vercel.app/invitado.html';
-var PHOTOROOM_ENDPOINT = '/api/process-photo';
-var FONDOS = [
-  {
-    nombre: 'Jardín de rosas',
-    urlH: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/horizontal/Fondo%201.png',
-    urlV: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/vertical/Fondo%201.png'
-  },
-  {
-    nombre: 'Patio colonial',
-    urlH: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/horizontal/Fondo%202.png',
-    urlV: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/vertical/Fondo%202.png'
-  },
-  {
-    nombre: 'Jardín dorado',
-    urlH: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/horizontal/Fondo%203.png',
-    urlV: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/vertical/Fondo%203.png'
-  }
+var SB='https://egvtxhtfgkwfyirklkbn.supabase.co';
+var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVndnR4aHRmZ2t3Znlpcmtsa2JuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDM4NTksImV4cCI6MjA5NDcxOTg1OX0.kQ5q1nKAQ847Pm_7jsZ9-NVGKg3xRoqGpUC-PasQqQc';
+var BUCKET='fotos-eventos';
+var EVENT='fatima-ethan-2026';
+var EVNAME='Fátima & Ethan · 30 Mayo 2026';
+var GUEST='https://foto-eventos-seven.vercel.app/invitado.html';
+var PR='/api/process-photo';
+
+var FONDOS=[
+  {n:'Jardín de rosas',h:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/horizontal/Fondo%201.png',v:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/vertical/Fondo%201.png'},
+  {n:'Patio colonial',h:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/horizontal/Fondo%202.png',v:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/vertical/Fondo%202.png'},
+  {n:'Jardín dorado',h:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/horizontal/Fondo%203.png',v:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/vertical/Fondo%203.png'}
 ];
 
-// ── ESTADO GLOBAL ───────────────────────
-var estado = {
-  pantalla: 'wait',
-  ultimoId: null,
-  fotoActual: null,
-  fondoIdx: -1
-};
+var E={page:'wait',lastId:null,foto:null,bgIdx:-1,orient:'horizontal'};
+function sbH(){return{'apikey':KEY,'Authorization':'Bearer '+KEY}}
+function H(k,v){document.getElementById(k).textContent=v}
 
-// ── NAVEGACIÓN ──────────────────────────
-function irA(p) {
-  document.querySelectorAll('.page').forEach(function(x){ x.classList.remove('active'); });
-  document.getElementById('page-' + p).classList.add('active');
-  estado.pantalla = p;
-  console.log('Pantalla:', p);
+function go(p){
+  document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active')});
+  document.getElementById(p).classList.add('active');
+  E.page=p;
+  ['ev0','ev1','ev2','ev3','ev4'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.textContent=EVNAME;
+  });
 }
 
-// ── HEADERS SUPABASE ────────────────────
-function sbH() {
-  return { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY };
-}
+// POLLING
+function poll(){
+  fetch(SB+'/rest/v1/fotos?event_id=eq.'+EVENT+'&select=*&order=created_at.desc',{headers:sbH()})
+    .then(function(r){return r.json()})
+    .then(function(data){
+      H('wt',data.length);
+      H('wd',data.filter(function(f){return f.processed}).length);
 
-// ── POLLING ─────────────────────────────
-function iniciarPolling() {
-  console.log('Polling iniciado');
-  setTimeout(cicloPolling, 1000);
-}
+      // Auto-reset when guest scans QR
+      if(E.page==='pq' && E.foto){
+        var cur=data.find(function(f){return f.id===E.foto.id});
+        if(cur && cur.scanned){
+          setTimeout(function(){
+            E.foto=null; E.bgIdx=-1; E.lastId=null;
+            go('pw');
+          },2000);
+        }
+      }
 
-function cicloPolling() {
-  fetch(SB + '/rest/v1/fotos?event_id=eq.' + EVENT + '&select=*&order=created_at.desc', { headers: sbH() })
-    .then(function(r){ return r.json(); })
-    .then(function(data) {
-      // Actualizar stats
-      var total = data.length;
-      var done = data.filter(function(f){ return f.processed; }).length;
-      document.getElementById('w-total').textContent = total;
-      document.getElementById('w-done').textContent = done;
+      if(E.page!=='pw'){setTimeout(poll,3000);return}
 
-      // Buscar foto pendiente
-      if (estado.pantalla !== 'wait') {
-        setTimeout(cicloPolling, 3000);
-        return;
-      }
-      var pendiente = null;
-      for (var i = 0; i < data.length; i++) {
-        if (!data[i].processed) { pendiente = data[i]; break; }
-      }
-      if (pendiente && pendiente.id !== estado.ultimoId) {
-        console.log('Nueva foto encontrada:', pendiente.id);
-        mostrarSeleccion(pendiente);
-      }
+      var p=null;
+      for(var i=0;i<data.length;i++){if(!data[i].processed){p=data[i];break}}
+      if(p && p.id!==E.lastId){E.lastId=p.id;E.foto=p;showSelect(p)}
     })
-    .catch(function(e){ console.log('Poll error:', e); })
-    .finally(function(){ setTimeout(cicloPolling, 3000); });
+    .catch(function(){})
+    .finally(function(){setTimeout(poll,3000)});
 }
 
-// ── MOSTRAR SELECCIÓN ───────────────────
-function mostrarSeleccion(foto) {
-  estado.ultimoId = foto.id;
-  estado.fotoActual = foto;
-  estado.fondoIdx = -1;
+// SHOW SELECTION
+async function showSelect(foto){
+  var url=SB+'/storage/v1/object/public/'+BUCKET+'/'+foto.storage_path;
+  // Detect orientation
+  var res=await fetch(url);
+  var blob=await res.blob();
+  var orient=await new Promise(function(resolve){
+    var img=new Image();
+    img.onload=function(){URL.revokeObjectURL(img.src);resolve(img.width>=img.height?'horizontal':'vertical')};
+    img.onerror=function(){resolve('horizontal')};
+    img.src=URL.createObjectURL(blob);
+  });
+  E.orient=orient; E.bgIdx=-1;
 
-  var url = SB + '/storage/v1/object/public/' + BUCKET + '/' + foto.storage_path;
-  document.getElementById('select-photo').src = url;
-  document.getElementById('select-id').textContent = '#' + foto.id;
-  document.getElementById('ev-select').textContent = EVENT_NAME;
-
-  // Marcar como procesada en Supabase
-  fetch(SB + '/rest/v1/fotos?id=eq.' + foto.id, {
-    method: 'PATCH',
-    headers: Object.assign({}, sbH(), { 'Content-Type': 'application/json', 'Prefer': 'return=minimal' }),
-    body: JSON.stringify({ processed: true })
+  // Mark processed in DB
+  fetch(SB+'/rest/v1/fotos?id=eq.'+foto.id,{
+    method:'PATCH',headers:Object.assign({},sbH(),{'Content-Type':'application/json','Prefer':'return=minimal'}),
+    body:JSON.stringify({processed:true})
   }).catch(function(){});
 
-  // Renderizar fondos
-  var grid = document.getElementById('bg-grid');
-  grid.innerHTML = '';
-  FONDOS.forEach(function(f, i) {
-    var card = document.createElement('div');
-    card.className = 'bg-card';
-    card.onclick = function() {
-      document.querySelectorAll('.bg-card').forEach(function(c){ c.classList.remove('sel'); });
-      card.classList.add('sel');
-      estado.fondoIdx = i;
-      var btn = document.getElementById('btn-confirm');
-      btn.textContent = 'Confirmar — ' + f.nombre;
-      btn.disabled = false;
-    };
-    card.innerHTML = '<img class="bg-img" src="' + f.urlH + '" alt="' + f.nombre + '">'
-      + '<div class="bg-name">' + f.nombre + '</div>';
-    grid.appendChild(card);
-  });
-
-  document.getElementById('btn-confirm').textContent = 'Selecciona un fondo para continuar';
-  document.getElementById('btn-confirm').disabled = true;
-
-  irA('select');
-}
-
-// ── CONFIRMAR FONDO ─────────────────────
-function confirmarFondo() {
-  if (estado.fondoIdx < 0 || !estado.fotoActual) return;
-  irA('processing');
-  document.getElementById('ev-proc').textContent = EVENT_NAME;
-  procesarFoto();
-}
-
-function setProgress(pct, txt) {
-  document.getElementById('prog').style.width = pct + '%';
-  document.getElementById('proc-lbl').textContent = txt;
-}
-
-async function procesarFoto() {
-  try {
-    setProgress(10, 'Descargando fotografía...');
-    var fotoUrl = SB + '/storage/v1/object/public/' + BUCKET + '/' + estado.fotoActual.storage_path;
-    var res = await fetch(fotoUrl);
-    var blob = await res.blob();
-
-    // Detect orientation
-    var orientation = await detectOrientation(blob);
-    console.log('Orientacion:', orientation);
-
-    setProgress(32, 'Procesando con Photoroom AI...');
-    var fondo = FONDOS[estado.fondoIdx];
-    var bgUrl = orientation === 'vertical' ? fondo.urlV : fondo.urlH;
-
-    var fd = new FormData();
-    fd.append('image_file', blob, 'photo.jpg');
-    fd.append('background_url', bgUrl);
-    fd.append('orientation', orientation);
-
-    var prRes = await fetch(PHOTOROOM_ENDPOINT, { method: 'POST', body: fd });
-    if (!prRes.ok) {
-      var errText = await prRes.text();
-      throw new Error('Photoroom error: ' + errText);
-    }
-    var processedBlob = await prRes.blob();
-
-    setProgress(72, 'Finalizando...');
-    var compuesto = await blobToCanvas(processedBlob);
-    // Store composed result for QR preview
-    var existing = document.getElementById('_composed_canvas');
-    if (existing) existing.remove();
-    compuesto.id = '_composed_canvas';
-    compuesto.style.display = 'none';
-    document.body.appendChild(compuesto);
-
-    setProgress(100, '¡Lista!');
-
-    var guestLink = GUEST_URL + '?foto=' + estado.fotoActual.id + '&bg=' + estado.fondoIdx;
-
-    await fetch(SB + '/rest/v1/fotos?id=eq.' + estado.fotoActual.id, {
-      method: 'PATCH',
-      headers: Object.assign({}, sbH(), { 'Content-Type': 'application/json', 'Prefer': 'return=minimal' }),
-      body: JSON.stringify({ scanned: true, selected_bg: estado.fondoIdx })
-    }).catch(function(){});
-
-    setTimeout(function() {
-      mostrarQR(guestLink);
-    }, 400);
-
-  } catch(e) {
-    console.error('Error procesando:', e);
-    alert('Error: ' + e.message + '\n\nIntenta de nuevo.');
-    irA('select');
+  if(orient==='horizontal'){
+    document.getElementById('ph').src=url;
+    renderH();
+    var b=document.getElementById('bh');
+    b.textContent='Selecciona un fondo para continuar';
+    b.disabled=true;
+    go('sh');
+  } else {
+    document.getElementById('pv').src=url;
+    renderV();
+    var b=document.getElementById('bv');
+    b.textContent='Selecciona un fondo';
+    b.disabled=true;
+    go('sv');
   }
 }
 
-function blobToCanvas(blob) {
-  return new Promise(function(resolve, reject) {
-    var img = new Image();
-    img.onload = function() {
-      var c = document.createElement('canvas');
-      c.width = img.width; c.height = img.height;
-      c.getContext('2d').drawImage(img, 0, 0);
-      resolve(c);
+function renderH(){
+  var g=document.getElementById('fh'); g.innerHTML='';
+  FONDOS.forEach(function(f,i){
+    var c=document.createElement('div');
+    c.className='bgc';
+    c.onclick=function(){
+      document.querySelectorAll('#fh .bgc').forEach(function(x){x.classList.remove('sel')});
+      c.classList.add('sel'); E.bgIdx=i;
+      var b=document.getElementById('bh');
+      b.textContent='Confirmar — '+f.n; b.disabled=false;
     };
-    img.onerror = reject;
-    img.src = URL.createObjectURL(blob);
+    c.innerHTML='<img class="bgi" src="'+f.h+'" alt="'+f.n+'"><div class="bgn">'+f.n+'</div>';
+    g.appendChild(c);
   });
 }
 
-function detectOrientation(blob) {
-  return new Promise(function(resolve) {
-    var img = new Image();
-    img.onload = function() {
-      URL.revokeObjectURL(img.src);
-      resolve(img.width >= img.height ? 'horizontal' : 'vertical');
+function renderV(){
+  var g=document.getElementById('fv'); g.innerHTML='';
+  FONDOS.forEach(function(f,i){
+    var c=document.createElement('div');
+    c.className='bgcv';
+    c.onclick=function(){
+      document.querySelectorAll('#fv .bgcv').forEach(function(x){x.classList.remove('sel')});
+      c.classList.add('sel'); E.bgIdx=i;
+      var b=document.getElementById('bv');
+      b.textContent='Confirmar — '+f.n; b.disabled=false;
     };
-    img.onerror = function() { resolve('horizontal'); };
-    img.src = URL.createObjectURL(blob);
+    c.innerHTML='<img class="bgiv" src="'+f.h+'" alt="'+f.n+'"><div class="bgnv">'+f.n+'</div>';
+    g.appendChild(c);
   });
 }
 
-function componerImagen(subjectBlob, bgUrl) {
-  return new Promise(function(resolve, reject) {
-    var subject = new Image();
-    subject.onload = function() {
-      var c = document.createElement('canvas');
-      c.width = subject.width; c.height = subject.height;
-      var ctx = c.getContext('2d');
-      var bg = new Image();
-      bg.crossOrigin = 'anonymous';
-      bg.onload = function() {
-        var sc = Math.max(c.width/bg.width, c.height/bg.height);
-        var bw = bg.width*sc, bh = bg.height*sc;
-        ctx.drawImage(bg, (c.width-bw)/2, (c.height-bh)/2, bw, bh);
-        ctx.drawImage(subject, 0, 0);
-        resolve(c);
-      };
-      bg.onerror = function() {
-        ctx.fillStyle = '#f0eeea'; ctx.fillRect(0,0,c.width,c.height);
-        ctx.drawImage(subject, 0, 0);
-        resolve(c);
-      };
-      bg.src = bgUrl;
-    };
-    subject.onerror = reject;
-    subject.src = URL.createObjectURL(subjectBlob);
-  });
+function confirmar(){
+  if(E.bgIdx<0||!E.foto) return;
+  go('pp');
+  procesar();
 }
 
-function renderizarPreviews(canvas, bgUrl) {
-  var cn = document.getElementById('prev-normal');
-  cn.width = canvas.width; cn.height = canvas.height;
-  cn.getContext('2d').drawImage(canvas, 0, 0);
-
-  var cs = document.getElementById('prev-stories');
-  var sw = canvas.width, sh = Math.round(sw * 16/9);
-  cs.width = sw; cs.height = sh;
-  var ctx = cs.getContext('2d');
-  var bg = new Image();
-  bg.crossOrigin = 'anonymous';
-  bg.onload = function() {
-    var sc = Math.max(sw/bg.width, sh/bg.height);
-    ctx.drawImage(bg, (sw-bg.width*sc)/2, (sh-bg.height*sc)/2, bg.width*sc, bg.height*sc);
-    var sc2 = Math.min(sw/canvas.width, sh*0.85/canvas.height);
-    var dw = canvas.width*sc2, dh = canvas.height*sc2;
-    ctx.drawImage(canvas, (sw-dw)/2, sh-dh-sh*0.02, dw, dh);
-  };
-  bg.onerror = function() {
-    ctx.fillStyle = '#f0eeea'; ctx.fillRect(0,0,sw,sh);
-    var sc2 = Math.min(sw/canvas.width, sh*0.85/canvas.height);
-    var dw = canvas.width*sc2, dh = canvas.height*sc2;
-    ctx.drawImage(canvas, (sw-dw)/2, sh-dh-sh*0.02, dw, dh);
-  };
-  bg.src = bgUrl;
+function prog(pct,txt){
+  document.getElementById('pfill').style.width=pct+'%';
+  if(txt) document.getElementById('plbl').textContent=txt;
 }
 
-function mostrarQR(url) {
-  document.getElementById('ev-qr').textContent = EVENT_NAME;
+async function procesar(){
+  try{
+    prog(10,'Descargando fotografía...');
+    var url=SB+'/storage/v1/object/public/'+BUCKET+'/'+E.foto.storage_path;
+    var res=await fetch(url);
+    var blob=await res.blob();
 
-  // Show original photo
-  var fotoUrl = SB + '/storage/v1/object/public/' + BUCKET + '/' + estado.fotoActual.storage_path;
-  document.getElementById('prev-original').src = fotoUrl;
+    prog(30,'Procesando con Photoroom AI...');
+    var f=FONDOS[E.bgIdx];
+    var bgUrl=E.orient==='vertical'?f.v:f.h;
+    var fd=new FormData();
+    fd.append('image_file',blob,'photo.jpg');
+    fd.append('background_url',bgUrl);
+    fd.append('orientation',E.orient);
 
-  // Show processed photo
-  var compCanvas = document.getElementById('_composed_canvas');
-  if (compCanvas) {
-    document.getElementById('prev-normal').src = compCanvas.toDataURL('image/jpeg', 0.92);
+    var pr=await fetch(PR,{method:'POST',body:fd});
+    if(!pr.ok){var e=await pr.text();throw new Error(e)}
+    var resultBlob=await pr.blob();
+
+    prog(75,'Guardando resultado...');
+    // Save processed image to Supabase — guest will download directly
+    var path=EVENT+'/processed/'+E.foto.id+'_result.png';
+    await fetch(SB+'/storage/v1/object/'+BUCKET+'/'+path,{
+      method:'POST',
+      headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'image/png','x-upsert':'true'},
+      body:resultBlob
+    });
+
+    // Update DB with result path and bg index
+    await fetch(SB+'/rest/v1/fotos?id=eq.'+E.foto.id,{
+      method:'PATCH',
+      headers:Object.assign({},sbH(),{'Content-Type':'application/json','Prefer':'return=minimal'}),
+      body:JSON.stringify({selected_bg:E.bgIdx,result_path:path})
+    });
+
+    prog(100,'¡Lista!');
+    var guestLink=GUEST+'?foto='+E.foto.id;
+    setTimeout(function(){mostrarQR(guestLink)},400);
+
+  }catch(e){
+    console.error(e);
+    alert('Error: '+e.message+'\nIntenta de nuevo.');
+    go(E.orient==='vertical'?'sv':'sh');
   }
-
-  // Generate QR
-  var el = document.getElementById('qr-canvas');
-  el.innerHTML = '';
-  new QRCode(el, { text: url, width: 220, height: 220, colorDark: '#0d0d0b', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
-  irA('qr');
 }
 
-function renderizarStoriesDesdeCanvas(canvas, bgUrl, subjectBlob) {
-  var cs = document.getElementById('prev-stories');
-  var sw = canvas.width, sh = Math.round(sw * 16/9);
-  cs.width = sw; cs.height = sh;
-  var ctx = cs.getContext('2d');
-  var bg = new Image();
-  bg.crossOrigin = 'anonymous';
-  bg.onload = function() {
-    var sc = Math.max(sw/bg.width, sh/bg.height);
-    ctx.drawImage(bg, (sw-bg.width*sc)/2, (sh-bg.height*sc)/2, bg.width*sc, bg.height*sc);
-    var subj = new Image();
-    subj.onload = function() {
-      var s2 = Math.min(sw/subj.width, sh*0.88/subj.height);
-      var dw = subj.width*s2, dh = subj.height*s2;
-      ctx.drawImage(subj, (sw-dw)/2, sh-dh-sh*0.015, dw, dh);
-    };
-    subj.src = URL.createObjectURL(subjectBlob);
-  };
-  bg.onerror = function() {
-    ctx.fillStyle = '#f0eeea'; ctx.fillRect(0,0,sw,sh);
-    var subj = new Image();
-    subj.onload = function() {
-      var s2 = Math.min(sw/subj.width, sh*0.88/subj.height);
-      ctx.drawImage(subj, (sw-subj.width*s2)/2, sh-subj.height*s2-sh*0.015, subj.width*s2, subj.height*s2);
-    };
-    subj.src = URL.createObjectURL(subjectBlob);
-  };
-  bg.src = bgUrl;
+function mostrarQR(url){
+  var el=document.getElementById('qr');
+  el.innerHTML='';
+  new QRCode(el,{text:url,width:280,height:280,colorDark:'#0d0d0b',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+  go('pq');
 }
 
-function siguienteInvitado() {
-  estado.fotoActual = null;
-  estado.fondoIdx = -1;
-  irA('wait');
-}
-
-// ── INIT ────────────────────────────────
-document.getElementById('ev-wait').textContent = EVENT_NAME;
-['ev-select','ev-proc','ev-qr'].forEach(function(id){
-  var el = document.getElementById(id);
-  if (el) el.textContent = EVENT_NAME;
-});
-
-// Modo manual con ?foto= en URL
-var fotoParam = new URLSearchParams(window.location.search).get('foto');
-if (fotoParam) {
-  fetch(SB + '/rest/v1/fotos?id=eq.' + fotoParam + '&select=*', { headers: sbH() })
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      if (data && data.length) mostrarSeleccion(data[0]);
-      else iniciarPolling();
-    }).catch(iniciarPolling);
-} else {
-  iniciarPolling();
-}
+// INIT
+go('pw');
+poll();
 </script>
 </body>
 </html>

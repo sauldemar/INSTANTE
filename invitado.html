@@ -4,75 +4,62 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Instante · Tu fotografía</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; }
-body { font-family: 'DM Sans', sans-serif; background: #faf9f6; color: #0d0d0b; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-.wrap { width: 100%; max-width: 420px; min-height: 100vh; background: #faf9f6; display: flex; flex-direction: column; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:'DM Sans',sans-serif;background:#faf9f6;color:#0d0d0b;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+.wrap{width:100%;max-width:420px;min-height:100vh;background:#faf9f6;display:flex;flex-direction:column}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 
-@keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-@keyframes spin { to { transform:rotate(360deg); } }
+.screen{display:none;flex-direction:column;flex:1;animation:fadeUp 0.28s ease}
+.screen.active{display:flex}
 
-.screen { display:none; flex-direction:column; flex:1; animation:fadeUp 0.28s ease; }
-.screen.active { display:flex; }
+.hdr{padding:18px 22px 14px;border-bottom:1px solid rgba(13,13,11,0.1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.brand{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase}
+.brand-dot{color:#c9a84c}
+.evlbl{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7a72;text-align:right;max-width:160px;line-height:1.4}
 
-.hdr { padding: 18px 22px 14px; border-bottom: 1px solid rgba(13,13,11,0.1); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-.brand { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; }
-.brand-dot { color:#c9a84c; }
-.event-lbl { font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:#7a7a72; text-align:right; max-width:160px; line-height:1.4; }
+.content{padding:20px;display:flex;flex-direction:column;gap:14px;flex:1}
+.title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;letter-spacing:-0.3px}
+.subtitle{font-size:12px;color:#7a7a72;margin-top:-6px}
 
-.content { padding:20px; display:flex; flex-direction:column; gap:14px; flex:1; }
-.title { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:300; letter-spacing:-0.3px; }
-.subtitle { font-size:12px; color:#7a7a72; margin-top:-6px; }
+.photo-card{border-radius:14px;overflow:hidden;border:1px solid rgba(13,13,11,0.1);background:#e8e5de;position:relative}
+.photo-card img{width:100%;display:block;object-fit:cover}
+.badge{position:absolute;top:10px;left:10px;background:rgba(13,13,11,0.7);color:#fff;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;backdrop-filter:blur(4px)}
+.badge.gold{background:rgba(201,168,76,0.9)}
 
-/* Photo cards */
-.photo-card { border-radius:14px; overflow:hidden; border:1px solid rgba(13,13,11,0.1); background:#e8e5de; position:relative; }
-.photo-card img { width:100%; display:block; object-fit:cover; }
-.photo-card .badge { position:absolute; top:10px; left:10px; background:rgba(13,13,11,0.7); color:#fff; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; padding:4px 10px; border-radius:20px; backdrop-filter:blur(4px); }
-.photo-card .badge.gold { background:rgba(201,168,76,0.85); }
+.skeleton{background:linear-gradient(90deg,#e8e5de 25%,#f0ede6 50%,#e8e5de 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+.sk-photo{height:200px;border-radius:14px}
 
-.photos-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.divider{display:flex;align-items:center;gap:10px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(13,13,11,0.1)}
+.divider span{font-size:10px;color:#b0b0a6;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap}
 
-/* Loading skeleton */
-.skeleton { background: linear-gradient(90deg, #e8e5de 25%, #f0ede6 50%, #e8e5de 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; }
-@keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
-.photo-placeholder { aspect-ratio:3/2; border-radius:14px; }
+.btn-main{background:#0d0d0b;color:#faf9f6;border:none;border-radius:14px;padding:16px;font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;font-family:'DM Sans',sans-serif;width:100%;cursor:pointer;transition:opacity 0.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-main:active{opacity:0.8}
+.btn-outline{background:transparent;color:#0d0d0b;border:1px solid rgba(13,13,11,0.22);border-radius:14px;padding:14px;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;font-family:'DM Sans',sans-serif;width:100%;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 0.15s}
+.btn-outline:active{background:#f3f1ec}
 
-/* Progress */
-.prog-wrap { display:flex; flex-direction:column; gap:6px; align-items:center; }
-.prog-track { width:90%; height:2px; background:rgba(13,13,11,0.1); border-radius:10px; overflow:hidden; }
-.prog-fill { height:100%; background:linear-gradient(90deg,#c9a84c,#0d0d0b); border-radius:10px; transition:width 0.4s ease; width:0%; }
-.prog-lbl { font-size:11px; color:#b0b0a6; letter-spacing:0.05em; }
+.loading-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.spinner{width:32px;height:32px;border:1.5px solid rgba(13,13,11,0.1);border-top-color:#c9a84c;border-radius:50%;animation:spin 0.8s linear infinite}
 
-/* Buttons */
-.btn-main { background:#0d0d0b; color:#faf9f6; border:none; border-radius:14px; padding:16px; font-size:13px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; font-family:'DM Sans',sans-serif; width:100%; cursor:pointer; transition:opacity 0.15s; display:flex; align-items:center; justify-content:center; gap:8px; }
-.btn-main:active { opacity:0.8; }
-.btn-outline { background:transparent; color:#0d0d0b; border:1px solid rgba(13,13,11,0.22); border-radius:14px; padding:14px; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; font-family:'DM Sans',sans-serif; width:100%; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:background 0.15s; }
-.btn-outline:active { background:#f3f1ec; }
+.error-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:40px;text-align:center}
+.error-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:#7a7a72}
 
-/* Loading screen */
-.loading-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
-.spinner { width:32px; height:32px; border:1.5px solid rgba(13,13,11,0.1); border-top-color:#c9a84c; border-radius:50%; animation:spin 0.8s linear infinite; }
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#0d0d0b;color:#faf9f6;padding:11px 22px;border-radius:20px;font-size:12px;opacity:0;transition:all 0.3s;z-index:999;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* Error */
-.error-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:40px; text-align:center; }
-.error-title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:300; color:#7a7a72; }
-
-/* Toast */
-.toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:#0d0d0b; color:#faf9f6; padding:11px 22px; border-radius:20px; font-size:12px; opacity:0; transition:all 0.3s; z-index:999; white-space:nowrap; pointer-events:none; }
-.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-
-.dots { display:flex; justify-content:center; gap:5px; padding:12px; flex-shrink:0; border-top:1px solid rgba(13,13,11,0.08); }
-.dot { width:5px; height:5px; border-radius:50%; background:rgba(13,13,11,0.2); transition:all 0.25s; }
-.dot.on { background:#0d0d0b; width:16px; border-radius:3px; }
+.dots{display:flex;justify-content:center;gap:5px;padding:12px;flex-shrink:0;border-top:1px solid rgba(13,13,11,0.08)}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(13,13,11,0.2);transition:all 0.25s}
+.dot.on{background:#0d0d0b;width:16px;border-radius:3px}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- CARGANDO -->
   <div class="screen active" id="s-loading">
     <div class="hdr"><div class="brand">Inst<span class="brand-dot">a</span>nte</div></div>
     <div class="loading-wrap">
@@ -81,273 +68,192 @@ body { font-family: 'DM Sans', sans-serif; background: #faf9f6; color: #0d0d0b; 
     </div>
   </div>
 
-  <!-- RESULTADO -->
   <div class="screen" id="s1">
     <div class="hdr">
       <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
-      <div class="event-lbl" id="ev1"></div>
+      <div class="evlbl" id="ev1"></div>
     </div>
     <div class="content">
       <div>
         <div class="title">Tu fotografía</div>
-        <div class="subtitle">Descarga tu recuerdo del evento</div>
+        <div class="subtitle">Tu recuerdo del evento</div>
       </div>
 
       <!-- Foto con fondo IA -->
       <div>
-        <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#b0b0a6;margin-bottom:8px;font-weight:500">Con fondo elegante</div>
+        <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#b0b0a6;margin-bottom:7px;font-weight:500">Con fondo elegante</div>
         <div class="photo-card" id="card-ai">
-          <div class="skeleton photo-placeholder" id="skeleton-ai"></div>
-          <img id="photo-ai" src="" alt="" style="display:none">
+          <div class="skeleton sk-photo" id="sk-ai"></div>
+          <img id="img-ai" src="" alt="" style="display:none">
           <div class="badge gold" id="badge-ai" style="display:none">✦ Fondo IA</div>
-        </div>
-        <div class="prog-wrap" id="prog-wrap" style="margin-top:10px">
-          <div class="prog-track"><div class="prog-fill" id="prog"></div></div>
-          <div class="prog-lbl" id="prog-lbl">Procesando con Photoroom AI...</div>
         </div>
       </div>
 
+      <div class="divider"><span>Foto original</span></div>
+
       <!-- Foto original -->
-      <div>
-        <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#b0b0a6;margin-bottom:8px;font-weight:500">Foto original</div>
-        <div class="photo-card">
-          <img id="photo-orig" src="" alt="">
-          <div class="badge">Fondo blanco</div>
-        </div>
+      <div class="photo-card">
+        <img id="img-orig" src="" alt="">
+        <div class="badge">Fondo blanco</div>
       </div>
 
       <div style="flex:1;min-height:8px"></div>
 
-      <!-- Botones -->
-      <div id="btns-wrap" style="display:none;flex-direction:column;gap:10px">
-        <button class="btn-main" onclick="guardarTodo()">⬇ Guardar fotos en galería</button>
-        <button class="btn-outline" onclick="compartirIG()">📸 Compartir en Instagram</button>
-      </div>
-
-      <div id="btns-orig-only" style="display:flex;flex-direction:column;gap:10px">
-        <button class="btn-outline" onclick="descargarOriginal()" style="opacity:0.6;font-size:11px">Descargar original mientras espera...</button>
+      <div id="btns" style="display:none;flex-direction:column;gap:10px">
+        <button class="btn-main" onclick="guardarAmbas()">⬇ Guardar fotos en galería</button>
+        <button class="btn-outline" onclick="abrirInstagram()">📸 Compartir en Instagram</button>
       </div>
     </div>
   </div>
 
-  <!-- ERROR -->
   <div class="screen" id="s-error">
     <div class="hdr"><div class="brand">Inst<span class="brand-dot">a</span>nte</div></div>
     <div class="error-wrap">
       <div class="error-title">Foto no encontrada</div>
-      <div style="font-size:12px;color:#b0b0a6" id="error-msg">El enlace puede haber expirado.</div>
+      <div style="font-size:12px;color:#b0b0a6" id="errmsg">El enlace puede haber expirado.</div>
     </div>
   </div>
 
   <div class="dots"><div class="dot on" id="d1"></div><div class="dot" id="d2"></div></div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-var SB = 'https://egvtxhtfgkwfyirklkbn.supabase.co';
-var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVndnR4aHRmZ2t3Znlpcmtsa2JuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDM4NTksImV4cCI6MjA5NDcxOTg1OX0.kQ5q1nKAQ847Pm_7jsZ9-NVGKg3xRoqGpUC-PasQqQc';
-var BUCKET = 'fotos-eventos';
-var SB_STORAGE = SB + '/storage/v1/object/public/' + BUCKET + '/fatima-ethan-2026/Fondos';
-var FONDOS = [
-  { nombre:'Jardín de rosas', urlH: SB_STORAGE+'/horizontal/Fondo%201.png', urlV: SB_STORAGE+'/vertical/Fondo%201.png' },
-  { nombre:'Patio colonial',  urlH: SB_STORAGE+'/horizontal/Fondo%202.png', urlV: SB_STORAGE+'/vertical/Fondo%202.png' },
-  { nombre:'Jardín dorado',   urlH: SB_STORAGE+'/horizontal/Fondo%203.png', urlV: SB_STORAGE+'/vertical/Fondo%203.png' }
-];
+var SB='https://egvtxhtfgkwfyirklkbn.supabase.co';
+var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVndnR4aHRmZ2t3Znlpcmtsa2JuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDM4NTksImV4cCI6MjA5NDcxOTg1OX0.kQ5q1nKAQ847Pm_7jsZ9-NVGKg3xRoqGpUC-PasQqQc';
+var BUCKET='fotos-eventos';
 
-var fotoData = null;
-var aiBlob = null;
-var origUrl = null;
-var toastTimer;
+var fotoData=null, origUrl=null, aiUrl=null, toastT;
 
-function sbH() { return { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY }; }
+function sbH(){return{'apikey':KEY,'Authorization':'Bearer '+KEY}}
+function goScreen(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});document.getElementById(id).classList.add('active')}
+function showToast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show')},2800)}
 
-function goScreen(id) {
-  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
-  document.getElementById(id).classList.add('active');
-}
+async function init(){
+  var params=new URLSearchParams(window.location.search);
+  var fotoId=params.get('foto');
+  if(!fotoId){goScreen('s-error');return}
 
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2800);
-}
+  try{
+    var r=await fetch(SB+'/rest/v1/fotos?id=eq.'+fotoId+'&select=*',{headers:sbH()});
+    var data=await r.json();
+    if(!data||!data.length){goScreen('s-error');return}
+    fotoData=data[0];
 
-function setProgress(pct, txt) {
-  document.getElementById('prog').style.width = pct + '%';
-  if (txt) document.getElementById('prog-lbl').textContent = txt;
-}
+    // Mark as scanned
+    fetch(SB+'/rest/v1/fotos?id=eq.'+fotoId,{
+      method:'PATCH',headers:Object.assign({},sbH(),{'Content-Type':'application/json','Prefer':'return=minimal'}),
+      body:JSON.stringify({scanned:true})
+    }).catch(function(){});
 
-async function init() {
-  var params = new URLSearchParams(window.location.search);
-  var fotoId = params.get('foto');
-  var bgIdx = parseInt(params.get('bg') || '0');
-
-  if (!fotoId) { goScreen('s-error'); return; }
-
-  try {
-    var r = await fetch(SB + '/rest/v1/fotos?id=eq.' + fotoId + '&select=*', { headers: sbH() });
-    var data = await r.json();
-    if (!data || !data.length) { goScreen('s-error'); return; }
-    fotoData = data[0];
-
-    origUrl = SB + '/storage/v1/object/public/' + BUCKET + '/' + fotoData.storage_path;
-    document.getElementById('ev1').textContent = 'Fátima & Ethan · 30 Mayo 2026';
-    document.getElementById('photo-orig').src = origUrl;
-    document.getElementById('photo-orig').onload = function() {
-      document.getElementById('photo-orig').style.display = 'block';
-    };
+    origUrl=SB+'/storage/v1/object/public/'+BUCKET+'/'+fotoData.storage_path;
+    document.getElementById('ev1').textContent='Fátima & Ethan · 30 Mayo 2026';
+    document.getElementById('img-orig').src=origUrl;
 
     goScreen('s1');
-    procesarConPhotoroom(bgIdx);
 
-  } catch(e) {
-    goScreen('s-error');
-    document.getElementById('error-msg').textContent = 'Error de conexión. Verifica tu internet.';
-  }
-}
-
-async function detectOrientation(blob) {
-  return new Promise(function(resolve) {
-    var img = new Image();
-    img.onload = function() { URL.revokeObjectURL(img.src); resolve(img.width >= img.height ? 'horizontal' : 'vertical'); };
-    img.onerror = function() { resolve('horizontal'); };
-    img.src = URL.createObjectURL(blob);
-  });
-}
-
-async function procesarConPhotoroom(bgIdx) {
-  try {
-    setProgress(8, 'Preparando fotografía...');
-    var res = await fetch(origUrl);
-    var blob = await res.blob();
-
-    var orientation = await detectOrientation(blob);
-    var fondo = FONDOS[bgIdx] || FONDOS[0];
-    var bgUrl = orientation === 'vertical' ? fondo.urlV : fondo.urlH;
-
-    setProgress(22, 'Procesando con Photoroom AI...');
-    var fd = new FormData();
-    fd.append('image_file', blob, 'photo.jpg');
-    fd.append('background_url', bgUrl);
-    fd.append('orientation', orientation);
-
-    var prRes = await fetch('/api/process-photo', { method: 'POST', body: fd });
-
-    if (!prRes.ok) {
-      var errText = await prRes.text();
-      throw new Error(errText);
-    }
-
-    setProgress(85, 'Preparando para descarga...');
-    aiBlob = await prRes.blob();
-
-    // Show processed image
-    var aiUrl = URL.createObjectURL(aiBlob);
-    var imgAI = document.getElementById('photo-ai');
-    imgAI.src = aiUrl;
-    imgAI.onload = function() {
-      document.getElementById('skeleton-ai').style.display = 'none';
-      imgAI.style.display = 'block';
-      document.getElementById('badge-ai').style.display = 'block';
-    };
-
-    setProgress(100, '¡Lista!');
-    setTimeout(function() {
-      document.getElementById('prog-wrap').style.display = 'none';
-      document.getElementById('btns-orig-only').style.display = 'none';
-      document.getElementById('btns-wrap').style.display = 'flex';
-      document.getElementById('btns-wrap').style.flexDirection = 'column';
-      document.getElementById('d2').classList.add('on');
-    }, 400);
-
-  } catch(e) {
-    console.error('Error Photoroom:', e);
-    setProgress(100, 'Error al procesar');
-    setTimeout(function() {
-      document.getElementById('prog-wrap').style.display = 'none';
-      document.getElementById('btns-orig-only').style.display = 'none';
-      document.getElementById('btns-wrap').style.display = 'flex';
-      document.getElementById('btns-wrap').style.flexDirection = 'column';
-    }, 500);
-  }
-}
-
-async function guardarConShare(blob, nombre) {
-  var file = new File([blob], nombre, { type: 'image/jpeg' });
-  if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-    try {
-      await navigator.share({ files: [file] });
-      return true;
-    } catch(e) {
-      if (e.name === 'AbortError') return true;
-    }
-  }
-  // Fallback download
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url; a.download = nombre;
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a);
-  setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
-  return true;
-}
-
-async function guardarTodo() {
-  showToast('Guardando tus fotos...');
-  // Save AI photo first
-  if (aiBlob) {
-    await guardarBlob(aiBlob, 'instante-fondo-elegante.jpg');
-    await new Promise(function(r){ setTimeout(r, 1000); });
-  }
-  // Save original
-  try {
-    var origRes = await fetch(origUrl);
-    var origBlob = await origRes.blob();
-    await guardarBlob(origBlob, 'instante-original.jpg');
-    showToast('✓ Ambas fotos guardadas');
-  } catch(e) {
-    showToast('✓ Foto guardada');
-  }
-}
-
-async function guardarBlob(blob, nombre) {
-  var file = new File([blob], nombre, { type: 'image/jpeg' });
-  if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-    try { await navigator.share({ files: [file] }); return; } catch(e) { if (e.name === 'AbortError') return; }
-  }
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url; a.download = nombre;
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a);
-  setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
-}
-
-async async function compartirIG() {
-  if (!aiBlob) { showToast('Espera a que cargue la foto'); return; }
-  try {
-    var file = new File([aiBlob], 'instante-foto.jpg', { type: 'image/jpeg' });
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({ files: [file], title: 'Mi foto · Instante' });
+    // Load AI result — already processed by iPad, just fetch from storage
+    if(fotoData.result_path){
+      aiUrl=SB+'/storage/v1/object/public/'+BUCKET+'/'+fotoData.result_path;
+      var imgAI=document.getElementById('img-ai');
+      imgAI.onload=function(){
+        document.getElementById('sk-ai').style.display='none';
+        imgAI.style.display='block';
+        document.getElementById('badge-ai').style.display='block';
+        document.getElementById('d2').classList.add('on');
+        var btns=document.getElementById('btns');
+        btns.style.display='flex';
+        btns.style.flexDirection='column';
+      };
+      imgAI.onerror=function(){
+        document.getElementById('sk-ai').style.display='none';
+        showToast('No se pudo cargar la foto con fondo');
+        var btns=document.getElementById('btns');
+        btns.style.display='flex';
+        btns.style.flexDirection='column';
+      };
+      imgAI.src=aiUrl;
     } else {
-      var url = URL.createObjectURL(aiBlob);
-      var a = document.createElement('a');
-      a.href = url; a.download = 'instante-foto.jpg';
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(function(){ URL.revokeObjectURL(url); window.location.href = 'instagram://'; }, 1200);
+      // No result yet — wait and retry
+      document.getElementById('sk-ai').innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;padding:20px"><div style="font-size:12px;color:#7a7a72;text-align:center">Procesando tu foto...<br>Esto puede tomar unos segundos</div></div>';
+      esperarResultado(fotoId);
     }
-  } catch(e) {
-    if (e.name !== 'AbortError') window.open('https://www.instagram.com', '_blank');
+
+  }catch(e){
+    goScreen('s-error');
+    document.getElementById('errmsg').textContent='Error de conexión. Verifica tu internet.';
   }
 }
 
-function descargarOriginal() {
-  if (!origUrl) return;
-  var a = document.createElement('a');
-  a.href = origUrl; a.download = 'instante-original.jpg'; a.target = '_blank';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+async function esperarResultado(fotoId){
+  var intentos=0;
+  var intervalo=setInterval(async function(){
+    intentos++;
+    if(intentos>20){clearInterval(intervalo);showToast('Tiempo de espera agotado');return}
+    try{
+      var r=await fetch(SB+'/rest/v1/fotos?id=eq.'+fotoId+'&select=result_path',{headers:sbH()});
+      var data=await r.json();
+      if(data&&data[0]&&data[0].result_path){
+        clearInterval(intervalo);
+        aiUrl=SB+'/storage/v1/object/public/'+BUCKET+'/'+data[0].result_path;
+        var imgAI=document.getElementById('img-ai');
+        imgAI.onload=function(){
+          document.getElementById('sk-ai').style.display='none';
+          imgAI.style.display='block';
+          document.getElementById('badge-ai').style.display='block';
+          document.getElementById('d2').classList.add('on');
+          var btns=document.getElementById('btns');
+          btns.style.display='flex';
+          btns.style.flexDirection='column';
+        };
+        imgAI.src=aiUrl;
+      }
+    }catch(e){}
+  },3000);
+}
+
+async function guardarBlob(url, nombre){
+  try{
+    var res=await fetch(url);
+    var blob=await res.blob();
+    var file=new File([blob],nombre,{type:blob.type||'image/jpeg'});
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+      try{await navigator.share({files:[file]});return true}catch(e){if(e.name==='AbortError')return true}
+    }
+    var u=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=u; a.download=nombre;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(u)},1500);
+    return true;
+  }catch(e){return false}
+}
+
+async function guardarAmbas(){
+  showToast('Guardando tus fotos...');
+  if(aiUrl) await guardarBlob(aiUrl,'instante-fondo-elegante.jpg');
+  await new Promise(function(r){setTimeout(r,900)});
+  await guardarBlob(origUrl,'instante-original.jpg');
+  showToast('✓ Fotos guardadas');
+}
+
+async function abrirInstagram(){
+  if(aiUrl){
+    // Save photo first then open Instagram
+    await guardarBlob(aiUrl,'instante-instagram.jpg');
+    setTimeout(function(){
+      // Try to open Instagram app
+      var start=Date.now();
+      window.location.href='instagram://';
+      setTimeout(function(){
+        if(Date.now()-start<2000){
+          window.open('https://www.instagram.com','_blank');
+        }
+      },1500);
+    },800);
+  } else {
+    window.location.href='instagram://';
+  }
 }
 
 init();
