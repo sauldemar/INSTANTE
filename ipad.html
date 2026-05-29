@@ -421,8 +421,9 @@ async function pollForNewPhoto() {
     if (!data || !data.length) return;
     var latest = data[0];
 
-    // Si es una foto nueva que no hemos mostrado
+    // Mostrar si es foto nueva o si es la primera vez
     if (latest.id !== lastPhotoId) {
+      console.log('Nueva foto detectada:', latest.id);
       lastPhotoId = latest.id;
       photoData = latest;
       showPhotoForSelection(latest);
