@@ -296,27 +296,50 @@ async function guardarConShare(blob, nombre) {
 
 async function guardarTodo() {
   showToast('Guardando tus fotos...');
+  // Save AI photo first
   if (aiBlob) {
-    await guardarConShare(aiBlob, 'instante-fondo-elegante.jpg');
-    await new Promise(function(r){ setTimeout(r, 800); });
+    await guardarBlob(aiBlob, 'instante-fondo-elegante.jpg');
+    await new Promise(function(r){ setTimeout(r, 1000); });
   }
   // Save original
-  var origRes = await fetch(origUrl);
-  var origBlob = await origRes.blob();
-  await guardarConShare(origBlob, 'instante-original.jpg');
+  try {
+    var origRes = await fetch(origUrl);
+    var origBlob = await origRes.blob();
+    await guardarBlob(origBlob, 'instante-original.jpg');
+    showToast('✓ Ambas fotos guardadas');
+  } catch(e) {
+    showToast('✓ Foto guardada');
+  }
 }
 
-async function compartirIG() {
-  if (!aiBlob) { showToast('Espera a que cargue la foto'); return; }
-  var file = new File([aiBlob], 'instante-foto.jpg', { type: 'image/jpeg' });
+async function guardarBlob(blob, nombre) {
+  var file = new File([blob], nombre, { type: 'image/jpeg' });
   if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-    try {
+    try { await navigator.share({ files: [file] }); return; } catch(e) { if (e.name === 'AbortError') return; }
+  }
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = nombre;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+}
+
+async async function compartirIG() {
+  if (!aiBlob) { showToast('Espera a que cargue la foto'); return; }
+  try {
+    var file = new File([aiBlob], 'instante-foto.jpg', { type: 'image/jpeg' });
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({ files: [file], title: 'Mi foto · Instante' });
-    } catch(e) {
-      if (e.name !== 'AbortError') showToast('Guarda la foto y compártela desde tu galería');
+    } else {
+      var url = URL.createObjectURL(aiBlob);
+      var a = document.createElement('a');
+      a.href = url; a.download = 'instante-foto.jpg';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); window.location.href = 'instagram://'; }, 1200);
     }
-  } else {
-    showToast('Guarda la foto y ábrela en Instagram para compartir');
+  } catch(e) {
+    if (e.name !== 'AbortError') window.open('https://www.instagram.com', '_blank');
   }
 }
 
