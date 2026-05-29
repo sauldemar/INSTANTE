@@ -441,7 +441,7 @@ async function pollForNewPhoto() {
     window.lastPhotoId = pendiente.id;
     window.photoData = pendiente;
     photoData = window.photoData;
-    showPhotoForSelection(pendiente);
+    window.showPhotoForSelection(pendiente);
 
   } catch(e) {
     console.log('Poll error:', e.message);
