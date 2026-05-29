@@ -21,71 +21,64 @@ export default async function handler(req) {
     const formData = await req.formData();
     const imageFile = formData.get('image_file');
     const bgUrl = formData.get('background_url');
-    const outputFormat = formData.get('output_format') || 'jpeg';
+    const orientation = formData.get('orientation') || 'horizontal';
 
     if (!imageFile) {
-      return new Response(JSON.stringify({ error: 'No image provided' }), { status: 400 });
+      return new Response(JSON.stringify({ error: 'No image provided' }), {
+        status: 400,
+        headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }
+      });
     }
 
-    // Build Photoroom request
+    // Build Photoroom v2 request with proper parameters
     const prForm = new FormData();
     prForm.append('imageFile', imageFile, 'photo.jpg');
 
-    // If background URL provided, use it
+    // Background image
     if (bgUrl && bgUrl !== '') {
       prForm.append('background.imageUrl', bgUrl);
     }
 
-    // Photoroom settings for professional portrait integration
-    prForm.append('outputSize', 'original');
-    prForm.append('outputFormat', outputFormat);
-    prForm.append('shadow.mode', 'ai.soft'); // AI soft shadow
-    prForm.append('lighting.mode', 'ai.auto'); // AI lighting match
+    // Output size based on orientation
+    if (orientation === 'vertical') {
+      prForm.append('outputSize', '1080x1920');
+    } else {
+      prForm.append('outputSize', '1920x1080');
+    }
+
+    // Padding to give subjects some breathing room
+    prForm.append('padding', '0.08');
+
+    // AI Shadow for realistic grounding
+    prForm.append('shadow.mode', 'ai.soft');
+
+    // AI Lighting to match background
+    prForm.append('lighting.mode', 'ai.auto');
+
+    // Background scaling to fill
     prForm.append('background.scaling', 'fill');
+
+    // High quality export
+    prForm.append('export.format', 'jpeg');
+    prForm.append('export.quality', '95');
 
     const prRes = await fetch('https://image-api.photoroom.com/v2/edit', {
       method: 'POST',
       headers: {
         'x-api-key': PHOTOROOM_KEY,
-        'Accept': 'image/jpeg, image/png',
+        'Accept': 'image/jpeg',
+        'pr-ai-shadows-model-version': '2026-04-15',
       },
       body: prForm
     });
 
     if (!prRes.ok) {
       const errText = await prRes.text();
-      console.error('Photoroom error:', prRes.status, errText);
+      console.error('Photoroom v2 error:', prRes.status, errText);
 
-      // Fallback to v1 segment if v2 fails
-      const prForm2 = new FormData();
-      prForm2.append('image_file', imageFile, 'photo.jpg');
-      prForm2.append('size', 'auto');
-      prForm2.append('format', outputFormat);
-      if (bgUrl && bgUrl !== '') {
-        prForm2.append('bg_image_url', bgUrl);
-      }
-
-      const prRes2 = await fetch('https://sdk.photoroom.com/v1/segment', {
-        method: 'POST',
-        headers: { 'x-api-key': PHOTOROOM_KEY },
-        body: prForm2
-      });
-
-      if (!prRes2.ok) {
-        const err2 = await prRes2.text();
-        return new Response(JSON.stringify({ error: 'Photoroom failed: ' + err2 }), {
-          status: 500,
-          headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }
-        });
-      }
-
-      const imgBlob2 = await prRes2.blob();
-      return new Response(imgBlob2, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': imgBlob2.type || 'image/png',
-          'Cache-Control': 'no-store',
-        }
+      return new Response(JSON.stringify({ error: 'Photoroom: ' + prRes.status + ' - ' + errText }), {
+        status: 500,
+        headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }
       });
     }
 
@@ -93,7 +86,7 @@ export default async function handler(req) {
     return new Response(imgBlob, {
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Content-Type': imgBlob.type || 'image/jpeg',
+        'Content-Type': 'image/jpeg',
         'Cache-Control': 'no-store',
       }
     });
