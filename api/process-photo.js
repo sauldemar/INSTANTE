@@ -58,8 +58,8 @@ export default async function handler(req) {
     // Background scaling to fill
     prForm.append('background.scaling', 'fill');
 
-    // High quality export
-    prForm.append('export.format', 'jpeg');
+    // High quality PNG output (supports transparency)
+    prForm.append('export.format', 'png');
     prForm.append('export.quality', '95');
 
     const prRes = await fetch('https://image-api.photoroom.com/v2/edit', {
@@ -86,7 +86,7 @@ export default async function handler(req) {
     return new Response(imgBlob, {
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'image/jpeg',
+        'Content-Type': 'image/png',
         'Cache-Control': 'no-store',
       }
     });
