@@ -456,11 +456,14 @@ function startPolling() {
   window._polling = true;
   function loop() {
     if (!window._polling) return;
-    pollForNewPhoto().finally(function() {
+    pollForNewPhoto().then(function() {
+      if (window._polling) setTimeout(loop, 3000);
+    }).catch(function(e) {
+      console.log('poll error:', e);
       if (window._polling) setTimeout(loop, 3000);
     });
   }
-  loop();
+  setTimeout(loop, 500);
 }
 
 function stopPolling() {
