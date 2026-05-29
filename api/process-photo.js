@@ -50,7 +50,7 @@ export default async function handler(req) {
     prForm.append('padding', '0.08');
 
     // AI Shadow for realistic grounding
-    prForm.append('shadow.mode', 'ai.soft');
+    prForm.append('shadow.mode', 'ai.preset-soft');
 
     // AI Lighting to match background
     prForm.append('lighting.mode', 'ai.auto');
