@@ -288,7 +288,7 @@ function mostrarSeleccion(foto) {
       btn.textContent = 'Confirmar — ' + f.nombre;
       btn.disabled = false;
     };
-    card.innerHTML = '<img class="bg-img" src="' + f.url + '" alt="' + f.nombre + '">'
+    card.innerHTML = '<img class="bg-img" src="' + f.urlH + '" alt="' + f.nombre + '">'
       + '<div class="bg-name">' + f.nombre + '</div>';
     grid.appendChild(card);
   });
