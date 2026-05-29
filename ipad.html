@@ -417,25 +417,30 @@ async function pollForNewPhoto() {
     var data = await r.json();
     if (!data || !data.length) return;
 
+    // Actualizar stats siempre
     var total = data.length;
     var completadas = data.filter(function(p){ return p.processed; }).length;
-    document.getElementById('w-total').textContent = total;
-    document.getElementById('w-scanned').textContent = completadas;
+    var wTotal = document.getElementById('w-total');
+    var wScanned = document.getElementById('w-scanned');
+    if (wTotal) wTotal.textContent = total;
+    if (wScanned) wScanned.textContent = completadas;
 
+    // Solo mostrar foto si estamos esperando
     if (window.currentScreen !== 'wait') return;
 
+    // Buscar foto pendiente
     var pendiente = null;
     for (var i = 0; i < data.length; i++) {
       if (!data[i].processed) { pendiente = data[i]; break; }
     }
-
     if (!pendiente) return;
     if (pendiente.id === window.lastPhotoId) return;
 
-    console.log('✓ Nueva foto:', pendiente.id);
+    // Mostrar
+    console.log('✓ Mostrando foto:', pendiente.id, 'screen:', window.currentScreen);
     window.lastPhotoId = pendiente.id;
     window.photoData = pendiente;
-    photoData = pendiente;
+    photoData = window.photoData;
     showPhotoForSelection(pendiente);
 
   } catch(e) {
@@ -444,13 +449,18 @@ async function pollForNewPhoto() {
 }
 
 function startPolling() {
-  if (pollingTimer) clearInterval(pollingTimer);
-  pollingTimer = setInterval(pollForNewPhoto, POLL_INTERVAL);
-  setTimeout(pollForNewPhoto, 500);
+  window._polling = true;
+  function loop() {
+    if (!window._polling) return;
+    pollForNewPhoto().finally(function() {
+      if (window._polling) setTimeout(loop, 3000);
+    });
+  }
+  loop();
 }
 
 function stopPolling() {
-  if (pollingTimer) { clearInterval(pollingTimer); pollingTimer = null; }
+  window._polling = false;
 }
 
 // ── MOSTRAR FOTO ──────────────────────────────────────────
