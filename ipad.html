@@ -375,11 +375,16 @@ const EVENT_ID = 'boda-ana-carlos-2026';
 const GUEST_BASE = 'https://foto-eventos-seven.vercel.app/invitado.html';
 const POLL_INTERVAL = 3000; // cada 3 segundos
 
-var photoData = null;
-var selectedBg = -1;
-var lastPhotoId = null;
-var pollingTimer = null;
-var currentScreen = 'wait';
+window.photoData = null;
+window.selectedBg = -1;
+window.lastPhotoId = null;
+window.pollingTimer = null;
+window.currentScreen = 'wait';
+var photoData = window.photoData;
+var selectedBg = window.selectedBg;
+var lastPhotoId = window.lastPhotoId;
+var pollingTimer = window.pollingTimer;
+var currentScreen = window.currentScreen;
 
 var DEFAULT_BGS = [
   { name: 'Jardín de rosas', gradient: ['#b8d4a8','#8fbb7a'], url: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/boda-ana-carlos-2026/Fondos/Fondo%201.png' },
@@ -392,6 +397,7 @@ function goScreen(n) {
   var el = document.getElementById(n);
   if (el) el.classList.add('active');
   currentScreen = n;
+  window.currentScreen = n;
   var stepMap = { 'wait': 0, 's1': 1, 's2': 2, 's3': 3 };
   var step = stepMap[n] || 0;
   ['d1','d2','d3'].forEach(function(id, i){
@@ -416,7 +422,7 @@ async function pollForNewPhoto() {
     document.getElementById('w-total').textContent = total;
     document.getElementById('w-scanned').textContent = completadas;
 
-    if (currentScreen !== 'wait') return;
+    if (window.currentScreen !== 'wait') return;
 
     var pendiente = null;
     for (var i = 0; i < data.length; i++) {
@@ -424,10 +430,11 @@ async function pollForNewPhoto() {
     }
 
     if (!pendiente) return;
-    if (pendiente.id === lastPhotoId) return;
+    if (pendiente.id === window.lastPhotoId) return;
 
     console.log('✓ Nueva foto:', pendiente.id);
-    lastPhotoId = pendiente.id;
+    window.lastPhotoId = pendiente.id;
+    window.photoData = pendiente;
     photoData = pendiente;
     showPhotoForSelection(pendiente);
 
