@@ -448,6 +448,10 @@ async function pollForNewPhoto() {
   }
 }
 
+window.showPhotoForSelection = showPhotoForSelection;
+window.goScreen = goScreen;
+window.renderBgs = renderBgs;
+
 function startPolling() {
   window._polling = true;
   function loop() {
