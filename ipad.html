@@ -182,7 +182,7 @@ var BUCKET = 'fotos-eventos';
 var EVENT = 'fatima-ethan-2026';
 var EVENT_NAME = 'Fátima & Ethan · 30 Mayo 2026';
 var GUEST_URL = 'https://foto-eventos-seven.vercel.app/invitado.html';
-var REMOVEBG = 'Pn97CAuXy7uWwkYvzVx8YyGs';
+var PHOTOROOM_ENDPOINT = '/api/process-photo';
 var FONDOS = [
   { nombre: 'Jardín de rosas', url: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/boda-ana-carlos-2026/Fondos/Fondo%201.png' },
   { nombre: 'Patio colonial',  url: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/boda-ana-carlos-2026/Fondos/Fondo%202.png' },
@@ -307,19 +307,21 @@ async function procesarFoto() {
     var res = await fetch(fotoUrl);
     var blob = await res.blob();
 
-    setProgress(30, 'Eliminando fondo con IA...');
+    setProgress(35, 'Procesando con Photoroom AI...');
+    var fondo = FONDOS[estado.fondoIdx];
     var fd = new FormData();
     fd.append('image_file', blob, 'photo.jpg');
-    fd.append('size', 'auto');
-    var rbRes = await fetch('https://api.remove.bg/v1.0/removebg', {
-      method: 'POST', headers: { 'X-Api-Key': REMOVEBG }, body: fd
-    });
-    if (!rbRes.ok) throw new Error('Remove.bg: ' + rbRes.status);
-    var subjectBlob = await rbRes.blob();
+    fd.append('background_url', fondo.url);
+    fd.append('output_format', 'jpeg');
 
-    setProgress(65, 'Aplicando fondo elegante...');
-    var fondo = FONDOS[estado.fondoIdx];
-    var compuesto = await componerImagen(subjectBlob, fondo.url);
+    var prRes = await fetch(PHOTOROOM_ENDPOINT, {
+      method: 'POST', body: fd
+    });
+    if (!prRes.ok) throw new Error('Photoroom: ' + prRes.status);
+    var processedBlob = await prRes.blob();
+
+    setProgress(72, 'Componiendo versión horizontal...');
+    var compuesto = await blobToCanvas(processedBlob);
 
     setProgress(88, 'Generando versión Stories...');
     renderizarPreviews(compuesto, fondo.url);
@@ -343,6 +345,20 @@ async function procesarFoto() {
     alert('Error: ' + e.message + '\n\nIntenta de nuevo.');
     irA('select');
   }
+}
+
+function blobToCanvas(blob) {
+  return new Promise(function(resolve, reject) {
+    var img = new Image();
+    img.onload = function() {
+      var c = document.createElement('canvas');
+      c.width = img.width; c.height = img.height;
+      c.getContext('2d').drawImage(img, 0, 0);
+      resolve(c);
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(blob);
+  });
 }
 
 function componerImagen(subjectBlob, bgUrl) {
@@ -406,6 +422,36 @@ function mostrarQR(url) {
   el.innerHTML = '';
   new QRCode(el, { text: url, width: 200, height: 200, colorDark: '#0d0d0b', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
   irA('qr');
+}
+
+function renderizarStoriesDesdeCanvas(canvas, bgUrl, subjectBlob) {
+  var cs = document.getElementById('prev-stories');
+  var sw = canvas.width, sh = Math.round(sw * 16/9);
+  cs.width = sw; cs.height = sh;
+  var ctx = cs.getContext('2d');
+  var bg = new Image();
+  bg.crossOrigin = 'anonymous';
+  bg.onload = function() {
+    var sc = Math.max(sw/bg.width, sh/bg.height);
+    ctx.drawImage(bg, (sw-bg.width*sc)/2, (sh-bg.height*sc)/2, bg.width*sc, bg.height*sc);
+    var subj = new Image();
+    subj.onload = function() {
+      var s2 = Math.min(sw/subj.width, sh*0.88/subj.height);
+      var dw = subj.width*s2, dh = subj.height*s2;
+      ctx.drawImage(subj, (sw-dw)/2, sh-dh-sh*0.015, dw, dh);
+    };
+    subj.src = URL.createObjectURL(subjectBlob);
+  };
+  bg.onerror = function() {
+    ctx.fillStyle = '#f0eeea'; ctx.fillRect(0,0,sw,sh);
+    var subj = new Image();
+    subj.onload = function() {
+      var s2 = Math.min(sw/subj.width, sh*0.88/subj.height);
+      ctx.drawImage(subj, (sw-subj.width*s2)/2, sh-subj.height*s2-sh*0.015, subj.width*s2, subj.height*s2);
+    };
+    subj.src = URL.createObjectURL(subjectBlob);
+  };
+  bg.src = bgUrl;
 }
 
 function siguienteInvitado() {
