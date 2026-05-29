@@ -382,9 +382,9 @@ var pollingTimer = null;
 var currentScreen = 'wait';
 
 var DEFAULT_BGS = [
-  { name: 'Jardín floral', gradient: ['#b8d4a8','#8fbb7a'] },
-  { name: 'Cielo dorado', gradient: ['#f5dfa0','#e8c96a'] },
-  { name: 'Mármol blanco', gradient: ['#f0eeea','#ddd9d0'] },
+  { name: 'Jardín de rosas', gradient: ['#b8d4a8','#8fbb7a'], url: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/boda-ana-carlos-2026/Fondos/Fondo%201.png' },
+  { name: 'Patio colonial', gradient: ['#f5dfa0','#e8c96a'], url: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/boda-ana-carlos-2026/Fondos/Fondo%202.png' },
+  { name: 'Jardín dorado', gradient: ['#f0eeea','#ddd9d0'], url: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/boda-ana-carlos-2026/Fondos/Fondo%203.png' },
 ];
 
 function goScreen(n) {
@@ -483,7 +483,6 @@ function renderBgs(bgs) {
   var grid = document.getElementById('bg-grid');
   grid.innerHTML = '';
   bgs.forEach(function(bg, i) {
-    var colors = bg.gradient || [bg.color, bg.color];
     var d = document.createElement('div');
     d.className = 'bg-card';
     d.onclick = function() {
@@ -494,7 +493,10 @@ function renderBgs(bgs) {
       btn.textContent = 'Confirmar — ' + bg.name;
       btn.disabled = false;
     };
-    d.innerHTML = '<div class="bg-preview" style="background:linear-gradient(160deg,'+colors[0]+','+colors[1]+')">'
+    var bgStyle = bg.url
+      ? 'background:url(' + bg.url + ') center/cover no-repeat'
+      : 'background:linear-gradient(160deg,' + (bg.gradient||['#eee','#ccc'])[0] + ',' + (bg.gradient||['#eee','#ccc'])[1] + ')';
+    d.innerHTML = '<div class="bg-preview" style="' + bgStyle + '">'
       + '<div class="bg-preview-name">' + bg.name + '</div></div>';
     grid.appendChild(d);
   });
