@@ -155,20 +155,28 @@ html, body { height: 100%; overflow: hidden; font-family: 'DM Sans', sans-serif;
     <div class="evname" id="ev-qr"></div>
     <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
   </div>
-  <div class="body">
-    <div class="qr-left">
-      <div class="qr-lbl">Escanea con tu celular</div>
-      <div class="qr-box" id="qr-canvas"></div>
-      <div class="qr-instr">Apunta la cámara<br>al código QR</div>
-    </div>
-    <div class="qr-right">
-      <div class="qr-title">Tu foto<br>está lista ✦</div>
-      <div class="qr-desc">Escanea el QR con tu celular para descargar tu foto normal y tu versión para Stories.</div>
-      <div class="prev-grid">
-        <div class="prev-item prev-normal"><div class="prev-lbl">Foto normal</div><div class="prev-wrap"><canvas id="prev-normal"></canvas></div></div>
-        <div class="prev-item prev-stories"><div class="prev-lbl">Stories</div><div class="prev-wrap"><canvas id="prev-stories"></canvas></div></div>
+  <div class="body" style="display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden">
+    <!-- Izquierda: fotos -->
+    <div style="display:flex;flex-direction:column;padding:24px 20px 24px 28px;gap:12px;overflow:hidden;border-right:1px solid rgba(13,13,11,0.1)">
+      <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#b0b0a6;font-weight:500">Foto original</div>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(13,13,11,0.1);flex:1;min-height:0;background:#e8e5de">
+        <img id="prev-original" src="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block" alt="">
       </div>
-      <button class="btn-next" onclick="siguienteInvitado()">Siguiente invitado →</button>
+      <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#b0b0a6;font-weight:500">Con fondo elegante</div>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(13,13,11,0.1);flex:1;min-height:0;background:#e8e5de">
+        <canvas id="prev-normal" style="width:100%;height:100%;display:block;object-fit:cover"></canvas>
+      </div>
+    </div>
+    <!-- Derecha: QR -->
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 32px;gap:20px;text-align:center">
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;line-height:1.15;letter-spacing:-0.5px;margin-bottom:12px">Tu foto<br>está lista ✦</div>
+        <div style="font-size:15px;color:#7a7a72;line-height:1.7">Escanea con tu celular para<br>descargar tu fotografía</div>
+      </div>
+      <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#b0b0a6">↓ Apunta la cámara aquí</div>
+      <div style="background:#fff;border:1px solid rgba(13,13,11,0.1);border-radius:18px;padding:20px" id="qr-canvas"></div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:#b0b0a6;line-height:1.5">El QR lleva directo<br>a tu foto</div>
+      <button class="btn-next" onclick="siguienteInvitado()" style="width:100%">Siguiente invitado →</button>
     </div>
   </div>
 </div>
@@ -341,6 +349,10 @@ async function procesarFoto() {
 
     setProgress(72, 'Finalizando...');
     var compuesto = await blobToCanvas(processedBlob);
+    // Store for QR preview
+    compuesto.id = '_composed_canvas';
+    compuesto.style.display = 'none';
+    document.body.appendChild(compuesto);
 
     setProgress(88, 'Generando versión Stories...');
     renderizarPreviews(compuesto, fondo.url);
@@ -449,9 +461,24 @@ function renderizarPreviews(canvas, bgUrl) {
 
 function mostrarQR(url) {
   document.getElementById('ev-qr').textContent = EVENT_NAME;
+
+  // Show original photo
+  var fotoUrl = SB + '/storage/v1/object/public/' + BUCKET + '/' + estado.fotoActual.storage_path;
+  document.getElementById('prev-original').src = fotoUrl;
+
+  // Show processed photo on canvas
+  var prevCanvas = document.getElementById('prev-normal');
+  var compCanvas = document.getElementById('_composed_canvas');
+  if (compCanvas) {
+    prevCanvas.width = compCanvas.width;
+    prevCanvas.height = compCanvas.height;
+    prevCanvas.getContext('2d').drawImage(compCanvas, 0, 0);
+  }
+
+  // Generate QR
   var el = document.getElementById('qr-canvas');
   el.innerHTML = '';
-  new QRCode(el, { text: url, width: 200, height: 200, colorDark: '#0d0d0b', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+  new QRCode(el, { text: url, width: 220, height: 220, colorDark: '#0d0d0b', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
   irA('qr');
 }
 
