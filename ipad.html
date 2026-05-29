@@ -379,7 +379,7 @@ var photoData = null;
 var selectedBg = -1;
 var lastPhotoId = null;
 var pollingTimer = null;
-var currentScreen = 'wait'; // init
+var currentScreen = 'wait';
 
 var DEFAULT_BGS = [
   { name: 'Jardín de rosas', gradient: ['#b8d4a8','#8fbb7a'], url: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/boda-ana-carlos-2026/Fondos/Fondo%201.png' },
@@ -403,55 +403,43 @@ function goScreen(n) {
 // ── POLLING ──────────────────────────────────────────────
 async function pollForNewPhoto() {
   try {
-    // Solo hacer polling cuando estamos en pantalla de espera
-    if (currentScreen !== 'wait') return;
-
-    var url = SUPABASE_URL + '/rest/v1/fotos?event_id=eq.' + EVENT_ID
-      + '&processed=eq.false&select=*&order=created_at.desc&limit=1';
-
+    var url = SUPABASE_URL + '/rest/v1/fotos?event_id=eq.' + EVENT_ID + '&select=*&order=created_at.desc';
     var r = await fetch(url, {
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
     });
-
     if (!r.ok) return;
     var data = await r.json();
-
-    // Actualizar stats
-    fetchStats();
-
     if (!data || !data.length) return;
-    var latest = data[0];
 
-    // Mostrar si es foto nueva o si es la primera vez
-    if (latest.id !== lastPhotoId) {
-      console.log('Nueva foto detectada:', latest.id);
-      lastPhotoId = latest.id;
-      photoData = latest;
-      showPhotoForSelection(latest);
+    var total = data.length;
+    var completadas = data.filter(function(p){ return p.processed; }).length;
+    document.getElementById('w-total').textContent = total;
+    document.getElementById('w-scanned').textContent = completadas;
+
+    if (currentScreen !== 'wait') return;
+
+    var pendiente = null;
+    for (var i = 0; i < data.length; i++) {
+      if (!data[i].processed) { pendiente = data[i]; break; }
     }
+
+    if (!pendiente) return;
+    if (pendiente.id === lastPhotoId) return;
+
+    console.log('✓ Nueva foto:', pendiente.id);
+    lastPhotoId = pendiente.id;
+    photoData = pendiente;
+    showPhotoForSelection(pendiente);
 
   } catch(e) {
     console.log('Poll error:', e.message);
   }
 }
 
-async function fetchStats() {
-  try {
-    var r = await fetch(SUPABASE_URL + '/rest/v1/fotos?event_id=eq.' + EVENT_ID + '&select=id,scanned', {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-    });
-    if (!r.ok) return;
-    var data = await r.json();
-    var total = data.length;
-    var scanned = data.filter(function(p){ return p.scanned; }).length;
-    document.getElementById('w-total').textContent = total;
-    document.getElementById('w-scanned').textContent = scanned;
-  } catch(e) {}
-}
-
 function startPolling() {
-  fetchStats();
+  if (pollingTimer) clearInterval(pollingTimer);
   pollingTimer = setInterval(pollForNewPhoto, POLL_INTERVAL);
+  setTimeout(pollForNewPhoto, 500);
 }
 
 function stopPolling() {
