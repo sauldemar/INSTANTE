@@ -389,13 +389,14 @@ var DEFAULT_BGS = [
 
 function goScreen(n) {
   document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
-  document.getElementById(n).classList.add('active');
+  var el = document.getElementById(n);
+  if (el) el.classList.add('active');
   currentScreen = n;
   var stepMap = { 'wait': 0, 's1': 1, 's2': 2, 's3': 3 };
   var step = stepMap[n] || 0;
   ['d1','d2','d3'].forEach(function(id, i){
-    var el = document.getElementById(id);
-    if (el) el.classList.toggle('on', i < step);
+    var dot = document.getElementById(id);
+    if (dot) dot.classList.toggle('on', i < step);
   });
 }
 
@@ -622,6 +623,8 @@ function nextGuest() {
 
 // ── INIT ──────────────────────────────────────────────────
 async function init() {
+  currentScreen = 'wait';
+  lastPhotoId = null;
   document.getElementById('event-name').textContent = 'Boda Ana & Carlos · 18 May 2026';
 
   // Si viene con parámetro ?foto= (modo manual desde operador)
