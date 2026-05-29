@@ -164,7 +164,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'DM Sans', sans-serif;
       </div>
       <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#b0b0a6;font-weight:500">Con fondo elegante</div>
       <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(13,13,11,0.1);flex:1;min-height:0;background:#e8e5de">
-        <canvas id="prev-normal" style="width:100%;height:100%;display:block;object-fit:cover"></canvas>
+        <img id="prev-normal" src="" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block" alt="">
       </div>
     </div>
     <!-- Derecha: QR -->
@@ -349,7 +349,9 @@ async function procesarFoto() {
 
     setProgress(72, 'Finalizando...');
     var compuesto = await blobToCanvas(processedBlob);
-    // Store for QR preview
+    // Store composed result for QR preview
+    var existing = document.getElementById('_composed_canvas');
+    if (existing) existing.remove();
     compuesto.id = '_composed_canvas';
     compuesto.style.display = 'none';
     document.body.appendChild(compuesto);
@@ -466,13 +468,10 @@ function mostrarQR(url) {
   var fotoUrl = SB + '/storage/v1/object/public/' + BUCKET + '/' + estado.fotoActual.storage_path;
   document.getElementById('prev-original').src = fotoUrl;
 
-  // Show processed photo on canvas
-  var prevCanvas = document.getElementById('prev-normal');
+  // Show processed photo
   var compCanvas = document.getElementById('_composed_canvas');
   if (compCanvas) {
-    prevCanvas.width = compCanvas.width;
-    prevCanvas.height = compCanvas.height;
-    prevCanvas.getContext('2d').drawImage(compCanvas, 0, 0);
+    document.getElementById('prev-normal').src = compCanvas.toDataURL('image/jpeg', 0.92);
   }
 
   // Generate QR
