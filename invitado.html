@@ -7,154 +7,135 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --ink: #0d0d0b; --ink-muted: #7a7a72; --ink-hint: #b0b0a6;
-  --paper: #faf9f6; --paper-warm: #f3f1ec; --paper-deep: #e8e5de;
-  --gold: #c9a84c; --border: rgba(13,13,11,0.1); --border-strong: rgba(13,13,11,0.22);
-}
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; }
-body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-.wrap { width: 100%; max-width: 420px; min-height: 100vh; background: var(--paper); display: flex; flex-direction: column; }
+body { font-family: 'DM Sans', sans-serif; background: #faf9f6; color: #0d0d0b; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+.wrap { width: 100%; max-width: 420px; min-height: 100vh; background: #faf9f6; display: flex; flex-direction: column; }
 
 @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 @keyframes spin { to { transform:rotate(360deg); } }
-@keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
 
 .screen { display:none; flex-direction:column; flex:1; animation:fadeUp 0.28s ease; }
 .screen.active { display:flex; }
 
-.hdr { padding: 18px 22px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.hdr { padding: 18px 22px 14px; border-bottom: 1px solid rgba(13,13,11,0.1); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .brand { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; }
-.brand-dot { color:var(--gold); }
-.event-lbl { font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-muted); }
+.brand-dot { color:#c9a84c; }
+.event-lbl { font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:#7a7a72; text-align:right; max-width:160px; line-height:1.4; }
 
-.photo-hero { position:relative; background:var(--paper-deep); flex-shrink:0; overflow:hidden; }
-.photo-hero img { width:100%; max-height:52vh; object-fit:cover; display:block; }
-.photo-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(13,13,11,0.4) 0%,transparent 55%); }
-.photo-meta { position:absolute; bottom:14px; left:18px; }
-.photo-id { font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.75); }
+.content { padding:20px; display:flex; flex-direction:column; gap:14px; flex:1; }
+.title { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:300; letter-spacing:-0.3px; }
+.subtitle { font-size:12px; color:#7a7a72; margin-top:-6px; }
 
-.content { padding:18px 20px; display:flex; flex-direction:column; gap:12px; flex:1; }
-.title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:300; letter-spacing:-0.3px; }
-.subtitle { font-size:12px; color:var(--ink-muted); line-height:1.6; margin-top:-4px; }
+/* Photo cards */
+.photo-card { border-radius:14px; overflow:hidden; border:1px solid rgba(13,13,11,0.1); background:#e8e5de; position:relative; }
+.photo-card img { width:100%; display:block; object-fit:cover; }
+.photo-card .badge { position:absolute; top:10px; left:10px; background:rgba(13,13,11,0.7); color:#fff; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; padding:4px 10px; border-radius:20px; backdrop-filter:blur(4px); }
+.photo-card .badge.gold { background:rgba(201,168,76,0.85); }
 
-.btn-main { background:var(--ink); color:var(--paper); border:none; border-radius:12px; padding:14px; font-size:12px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; font-family:'DM Sans',sans-serif; width:100%; cursor:pointer; transition:opacity 0.15s; display:flex; align-items:center; justify-content:center; gap:8px; }
+.photos-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+/* Loading skeleton */
+.skeleton { background: linear-gradient(90deg, #e8e5de 25%, #f0ede6 50%, #e8e5de 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; }
+@keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+.photo-placeholder { aspect-ratio:3/2; border-radius:14px; }
+
+/* Progress */
+.prog-wrap { display:flex; flex-direction:column; gap:6px; align-items:center; }
+.prog-track { width:90%; height:2px; background:rgba(13,13,11,0.1); border-radius:10px; overflow:hidden; }
+.prog-fill { height:100%; background:linear-gradient(90deg,#c9a84c,#0d0d0b); border-radius:10px; transition:width 0.4s ease; width:0%; }
+.prog-lbl { font-size:11px; color:#b0b0a6; letter-spacing:0.05em; }
+
+/* Buttons */
+.btn-main { background:#0d0d0b; color:#faf9f6; border:none; border-radius:14px; padding:16px; font-size:13px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; font-family:'DM Sans',sans-serif; width:100%; cursor:pointer; transition:opacity 0.15s; display:flex; align-items:center; justify-content:center; gap:8px; }
 .btn-main:active { opacity:0.8; }
-.btn-outline { background:transparent; color:var(--ink); border:1px solid var(--border-strong); border-radius:12px; padding:12px; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-family:'DM Sans',sans-serif; width:100%; cursor:pointer; transition:background 0.15s; display:flex; align-items:center; justify-content:center; gap:7px; }
-.btn-outline:active { background:var(--paper-warm); }
-.btn-ghost { background:none; border:none; cursor:pointer; color:var(--ink-hint); font-size:11px; letter-spacing:0.06em; text-transform:uppercase; padding:4px; text-align:center; font-family:'DM Sans',sans-serif; width:100%; }
+.btn-outline { background:transparent; color:#0d0d0b; border:1px solid rgba(13,13,11,0.22); border-radius:14px; padding:14px; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; font-family:'DM Sans',sans-serif; width:100%; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:background 0.15s; }
+.btn-outline:active { background:#f3f1ec; }
 
-.versions { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.ver-label { font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-hint); margin-bottom:5px; font-weight:500; }
-.ver-thumb { border-radius:10px; overflow:hidden; border:1px solid var(--border); background:var(--paper-deep); }
-.ver-thumb img, .ver-thumb canvas { width:100%; display:block; }
-.ver-normal .ver-thumb { aspect-ratio:3/2; }
-.ver-stories .ver-thumb { aspect-ratio:9/16; }
+/* Loading screen */
+.loading-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
+.spinner { width:32px; height:32px; border:1.5px solid rgba(13,13,11,0.1); border-top-color:#c9a84c; border-radius:50%; animation:spin 0.8s linear infinite; }
 
-.divider { display:flex; align-items:center; gap:10px; }
-.divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
-.divider span { font-size:10px; color:var(--ink-hint); letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap; }
-
-.progress-wrap { display:flex; flex-direction:column; gap:8px; align-items:center; padding:8px 0; }
-.progress-track { width:85%; height:2px; background:var(--border); border-radius:10px; overflow:hidden; }
-.progress-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--ink)); border-radius:10px; transition:width 0.3s ease; width:0%; }
-.progress-lbl { font-size:11px; color:var(--ink-hint); letter-spacing:0.06em; }
-
-.skeleton { background: linear-gradient(90deg, var(--paper-deep) 25%, var(--paper-warm) 50%, var(--paper-deep) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius:10px; }
-
-.loading-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:40px; }
-.spinner { width:32px; height:32px; border:1.5px solid var(--border); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; }
-
+/* Error */
 .error-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:40px; text-align:center; }
-.error-title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:300; color:var(--ink-muted); }
+.error-title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:300; color:#7a7a72; }
 
-.dots { display:flex; justify-content:center; gap:5px; padding:12px; flex-shrink:0; border-top:1px solid var(--border); }
-.dot { width:5px; height:5px; border-radius:50%; background:var(--border-strong); transition:all 0.25s; }
-.dot.on { background:var(--ink); width:16px; border-radius:3px; }
-
-.toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--ink); color:var(--paper); padding:10px 20px; border-radius:20px; font-size:12px; opacity:0; transition:all 0.3s; z-index:999; white-space:nowrap; pointer-events:none; }
+/* Toast */
+.toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:#0d0d0b; color:#faf9f6; padding:11px 22px; border-radius:20px; font-size:12px; opacity:0; transition:all 0.3s; z-index:999; white-space:nowrap; pointer-events:none; }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+.dots { display:flex; justify-content:center; gap:5px; padding:12px; flex-shrink:0; border-top:1px solid rgba(13,13,11,0.08); }
+.dot { width:5px; height:5px; border-radius:50%; background:rgba(13,13,11,0.2); transition:all 0.25s; }
+.dot.on { background:#0d0d0b; width:16px; border-radius:3px; }
 </style>
 </head>
 <body>
 <div class="wrap">
 
+  <!-- CARGANDO -->
   <div class="screen active" id="s-loading">
     <div class="hdr"><div class="brand">Inst<span class="brand-dot">a</span>nte</div></div>
     <div class="loading-wrap">
       <div class="spinner"></div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300">Cargando tu foto...</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:#7a7a72">Cargando tu foto...</div>
     </div>
   </div>
 
+  <!-- RESULTADO -->
   <div class="screen" id="s1">
     <div class="hdr">
       <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
       <div class="event-lbl" id="ev1"></div>
     </div>
-    <div class="photo-hero">
-      <img id="photo-orig" src="" alt="">
-      <div class="photo-overlay"></div>
-      <div class="photo-meta"><div class="photo-id" id="pid1"></div></div>
-    </div>
     <div class="content">
       <div>
-        <div class="title">¡Aquí está tu fotografía!</div>
-        <div class="subtitle" id="ev-sub"></div>
+        <div class="title">Tu fotografía</div>
+        <div class="subtitle">Descarga tu recuerdo del evento</div>
       </div>
 
-      <div id="progress-wrap" class="progress-wrap">
-        <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
-        <div class="progress-lbl" id="prog-lbl">Procesando con IA...</div>
-        <button class="btn-ghost" onclick="descargarOriginal()">Descargar original mientras espero</button>
-      </div>
-
-      <div id="versions-wrap" style="display:none">
-        <div class="divider" style="margin-bottom:10px"><span>Con fondo elegante</span></div>
-        <div class="versions" style="margin-bottom:12px">
-          <div class="ver-normal">
-            <div class="ver-label">Horizontal</div>
-            <div class="ver-thumb"><canvas id="c-bg-h"></canvas></div>
-          </div>
-          <div class="ver-stories">
-            <div class="ver-label">Stories</div>
-            <div class="ver-thumb"><canvas id="c-bg-v"></canvas></div>
-          </div>
+      <!-- Foto con fondo IA -->
+      <div>
+        <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#b0b0a6;margin-bottom:8px;font-weight:500">Con fondo elegante</div>
+        <div class="photo-card" id="card-ai">
+          <div class="skeleton photo-placeholder" id="skeleton-ai"></div>
+          <img id="photo-ai" src="" alt="" style="display:none">
+          <div class="badge gold" id="badge-ai" style="display:none">✦ Fondo IA</div>
         </div>
-        <div class="divider" style="margin-bottom:10px"><span>Original fondo blanco</span></div>
-        <div class="versions">
-          <div class="ver-normal">
-            <div class="ver-label">Horizontal</div>
-            <div class="ver-thumb"><img id="orig-h" src="" alt=""></div>
-          </div>
-          <div class="ver-stories">
-            <div class="ver-label">Stories</div>
-            <div class="ver-thumb"><canvas id="c-orig-v"></canvas></div>
-          </div>
+        <div class="prog-wrap" id="prog-wrap" style="margin-top:10px">
+          <div class="prog-track"><div class="prog-fill" id="prog"></div></div>
+          <div class="prog-lbl" id="prog-lbl">Procesando con Photoroom AI...</div>
         </div>
       </div>
 
-      <div style="flex:1"></div>
-
-      <div id="btns-wrap" style="display:none;flex-direction:column;gap:8px">
-        <button class="btn-main" onclick="guardarTodo()">⬇ Guardar las 4 fotos</button>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <button class="btn-outline" onclick="guardar('bg-h')">Fondo · H</button>
-          <button class="btn-outline" onclick="guardar('bg-v')">Fondo · Stories</button>
-          <button class="btn-outline" onclick="guardar('orig-h')">Original · H</button>
-          <button class="btn-outline" onclick="guardar('orig-v')">Original · Stories</button>
+      <!-- Foto original -->
+      <div>
+        <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#b0b0a6;margin-bottom:8px;font-weight:500">Foto original</div>
+        <div class="photo-card">
+          <img id="photo-orig" src="" alt="">
+          <div class="badge">Fondo blanco</div>
         </div>
+      </div>
+
+      <div style="flex:1;min-height:8px"></div>
+
+      <!-- Botones -->
+      <div id="btns-wrap" style="display:none;flex-direction:column;gap:10px">
+        <button class="btn-main" onclick="guardarTodo()">⬇ Guardar fotos en galería</button>
         <button class="btn-outline" onclick="compartirIG()">📸 Compartir en Instagram</button>
+      </div>
+
+      <div id="btns-orig-only" style="display:flex;flex-direction:column;gap:10px">
+        <button class="btn-outline" onclick="descargarOriginal()" style="opacity:0.6;font-size:11px">Descargar original mientras espera...</button>
       </div>
     </div>
   </div>
 
+  <!-- ERROR -->
   <div class="screen" id="s-error">
     <div class="hdr"><div class="brand">Inst<span class="brand-dot">a</span>nte</div></div>
     <div class="error-wrap">
       <div class="error-title">Foto no encontrada</div>
-      <div style="font-size:12px;color:var(--ink-hint)" id="error-msg">El enlace puede haber expirado.</div>
+      <div style="font-size:12px;color:#b0b0a6" id="error-msg">El enlace puede haber expirado.</div>
     </div>
   </div>
 
@@ -167,15 +148,16 @@ body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(
 var SB = 'https://egvtxhtfgkwfyirklkbn.supabase.co';
 var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVndnR4aHRmZ2t3Znlpcmtsa2JuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDM4NTksImV4cCI6MjA5NDcxOTg1OX0.kQ5q1nKAQ847Pm_7jsZ9-NVGKg3xRoqGpUC-PasQqQc';
 var BUCKET = 'fotos-eventos';
-var PHOTOROOM_ENDPOINT = '/api/process-photo';
+var SB_STORAGE = SB + '/storage/v1/object/public/' + BUCKET + '/fatima-ethan-2026/Fondos';
 var FONDOS = [
-  { nombre:'Jardín de rosas', url:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/Fondo%201.png' },
-  { nombre:'Patio colonial',  url:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/Fondo%202.png' },
-  { nombre:'Jardín dorado',   url:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/Fondo%203.png' }
+  { nombre:'Jardín de rosas', urlH: SB_STORAGE+'/horizontal/Fondo%201.png', urlV: SB_STORAGE+'/vertical/Fondo%201.png' },
+  { nombre:'Patio colonial',  urlH: SB_STORAGE+'/horizontal/Fondo%202.png', urlV: SB_STORAGE+'/vertical/Fondo%202.png' },
+  { nombre:'Jardín dorado',   urlH: SB_STORAGE+'/horizontal/Fondo%203.png', urlV: SB_STORAGE+'/vertical/Fondo%203.png' }
 ];
 
 var fotoData = null;
-var resultados = { bgH: null, bgV: null, origV: null };
+var aiBlob = null;
+var origUrl = null;
 var toastTimer;
 
 function sbH() { return { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY }; }
@@ -189,7 +171,7 @@ function showToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2500);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2800);
 }
 
 function setProgress(pct, txt) {
@@ -202,7 +184,7 @@ async function init() {
   var fotoId = params.get('foto');
   var bgIdx = parseInt(params.get('bg') || '0');
 
-  if (!fotoId) { goScreen('s-error'); document.getElementById('error-msg').textContent = 'No se especificó ninguna fotografía.'; return; }
+  if (!fotoId) { goScreen('s-error'); return; }
 
   try {
     var r = await fetch(SB + '/rest/v1/fotos?id=eq.' + fotoId + '&select=*', { headers: sbH() });
@@ -210,20 +192,15 @@ async function init() {
     if (!data || !data.length) { goScreen('s-error'); return; }
     fotoData = data[0];
 
-    var fotoUrl = SB + '/storage/v1/object/public/' + BUCKET + '/' + fotoData.storage_path;
-    var eventLabel = 'Fátima & Ethan · 30 Mayo 2026';
-
-    document.getElementById('ev1').textContent = eventLabel;
-    document.getElementById('ev-sub').textContent = eventLabel;
-    document.getElementById('pid1').textContent = '#' + fotoData.id;
-    document.getElementById('photo-orig').src = fotoUrl;
-    document.getElementById('orig-h').src = fotoUrl;
+    origUrl = SB + '/storage/v1/object/public/' + BUCKET + '/' + fotoData.storage_path;
+    document.getElementById('ev1').textContent = 'Fátima & Ethan · 30 Mayo 2026';
+    document.getElementById('photo-orig').src = origUrl;
+    document.getElementById('photo-orig').onload = function() {
+      document.getElementById('photo-orig').style.display = 'block';
+    };
 
     goScreen('s1');
-    document.getElementById('d1').classList.add('on');
-
-    generarOriginalVertical(fotoUrl);
-    procesarConFondo(fotoUrl, bgIdx);
+    procesarConPhotoroom(bgIdx);
 
   } catch(e) {
     goScreen('s-error');
@@ -231,226 +208,123 @@ async function init() {
   }
 }
 
-function generarOriginalVertical(fotoUrl) {
-  var img = new Image();
-  img.crossOrigin = 'anonymous';
-  img.onload = function() {
-    var c = document.getElementById('c-orig-v');
-    var w = img.width, h = Math.round(w * 16/9);
-    c.width = w; c.height = h;
-    var ctx = c.getContext('2d');
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0,0,w,h);
-    var sc = Math.min(w/img.width, h*0.9/img.height);
-    var dw = Math.round(img.width*sc), dh = Math.round(img.height*sc);
-    ctx.drawImage(img, Math.round((w-dw)/2), Math.round((h-dh)/2), dw, dh);
-    resultados.origV = c;
-  };
-  img.src = fotoUrl;
-}
-
-async function procesarConFondo(fotoUrl, bgIdx) {
-  try {
-    setProgress(8, 'Descargando fotografía...');
-    var res = await fetch(fotoUrl);
-    var blob = await res.blob();
-
-    setProgress(28, 'Procesando con Photoroom AI...');
-    var fondo = FONDOS[bgIdx] || FONDOS[0];
-    var fd = new FormData();
-    fd.append('image_file', blob, 'photo.jpg');
-    fd.append('background_url', fondo.url);
-    fd.append('output_format', 'jpeg');
-
-    var prRes = await fetch(PHOTOROOM_ENDPOINT, { method: 'POST', body: fd });
-    if (!prRes.ok) throw new Error('Photoroom: ' + prRes.status);
-    var processedBlob = await prRes.blob();
-
-    setProgress(65, 'Componiendo versiones...');
-    var compuesto = await blobToCanvas(processedBlob);
-
-    setProgress(82, 'Generando versión Stories...');
-    renderizarVersiones(compuesto, fondo.url, processedBlob);
-
-    setProgress(100, '¡Listo!');
-    setTimeout(mostrarResultados, 300);
-
-  } catch(e) {
-    console.error('Process error:', e);
-    setProgress(100, 'No se pudo procesar el fondo');
-    setTimeout(function() {
-      document.getElementById('progress-wrap').style.display = 'none';
-      document.getElementById('btns-wrap').style.display = 'flex';
-    }, 500);
-  }
-}
-
-function blobToCanvas(blob) {
-  return new Promise(function(resolve, reject) {
+async function detectOrientation(blob) {
+  return new Promise(function(resolve) {
     var img = new Image();
-    img.onload = function() {
-      var c = document.createElement('canvas');
-      c.width = img.width; c.height = img.height;
-      c.getContext('2d').drawImage(img, 0, 0);
-      resolve(c);
-    };
-    img.onerror = reject;
+    img.onload = function() { URL.revokeObjectURL(img.src); resolve(img.width >= img.height ? 'horizontal' : 'vertical'); };
+    img.onerror = function() { resolve('horizontal'); };
     img.src = URL.createObjectURL(blob);
   });
 }
 
-function componerImagen(subjectBlob, bgUrl) {
-  return new Promise(function(resolve, reject) {
-    var subject = new Image();
-    subject.onload = function() {
-      var c = document.createElement('canvas');
-      c.width = subject.width; c.height = subject.height;
-      var ctx = c.getContext('2d');
-      var bg = new Image();
-      bg.crossOrigin = 'anonymous';
-      bg.onload = function() {
-        var sc = Math.max(c.width/bg.width, c.height/bg.height);
-        ctx.drawImage(bg, (c.width-bg.width*sc)/2, (c.height-bg.height*sc)/2, bg.width*sc, bg.height*sc);
-        ctx.drawImage(subject, 0, 0);
-        resolve(c);
-      };
-      bg.onerror = function() {
-        ctx.fillStyle = '#f0eeea'; ctx.fillRect(0,0,c.width,c.height);
-        ctx.drawImage(subject, 0, 0); resolve(c);
-      };
-      bg.src = bgUrl;
-    };
-    subject.onerror = reject;
-    subject.src = URL.createObjectURL(subjectBlob);
-  });
-}
-
-function renderizarVersiones(canvas, bgUrl, processedBlob) {
-  var subjectBlob = processedBlob;
-  var cn = document.getElementById('c-bg-h');
-  cn.width = canvas.width; cn.height = canvas.height;
-  cn.getContext('2d').drawImage(canvas, 0, 0);
-  resultados.bgH = cn;
-
-  var cs = document.getElementById('c-bg-v');
-  var sw = canvas.width, sh = Math.round(sw * 16/9);
-  cs.width = sw; cs.height = sh;
-  var ctx = cs.getContext('2d');
-
-  var bg = new Image();
-  bg.crossOrigin = 'anonymous';
-  bg.onload = function() {
-    var sc = Math.max(sw/bg.width, sh/bg.height);
-    ctx.drawImage(bg, (sw-bg.width*sc)/2, (sh-bg.height*sc)/2, bg.width*sc, bg.height*sc);
-    var subj = new Image();
-    subj.onload = function() {
-      var s2 = Math.min(sw/subj.width, sh*0.85/subj.height);
-      var dw = subj.width*s2, dh = subj.height*s2;
-      ctx.drawImage(subj, (sw-dw)/2, sh-dh-sh*0.02, dw, dh);
-      resultados.bgV = cs;
-    };
-    subj.src = URL.createObjectURL(subjectBlob);
-  };
-  bg.onerror = function() {
-    ctx.fillStyle = '#f0eeea'; ctx.fillRect(0,0,sw,sh);
-  };
-  bg.src = bgUrl;
-}
-
-function mostrarResultados() {
-  document.getElementById('progress-wrap').style.display = 'none';
-  document.getElementById('versions-wrap').style.display = 'block';
-  document.getElementById('btns-wrap').style.display = 'flex';
-  document.getElementById('d2').classList.add('on');
-}
-
-async function guardar(tipo) {
+async function procesarConPhotoroom(bgIdx) {
   try {
-    if (tipo === 'bg-h' && resultados.bgH) {
-      await guardarCanvas(resultados.bgH, 'instante-fondo-horizontal.jpg');
-    } else if (tipo === 'bg-v' && resultados.bgV) {
-      await guardarCanvas(resultados.bgV, 'instante-fondo-stories.jpg');
-    } else if (tipo === 'orig-h') {
-      var url = SB + '/storage/v1/object/public/' + BUCKET + '/' + fotoData.storage_path;
-      await compartirArchivo(url, 'instante-original.jpg');
-    } else if (tipo === 'orig-v' && resultados.origV) {
-      await guardarCanvas(resultados.origV, 'instante-original-stories.jpg');
-    }
-  } catch(e) {
-    showToast('No se pudo guardar, intenta de nuevo');
-  }
-}
-
-async function guardarCanvas(canvas, nombre) {
-  canvas.toBlob(async function(blob) {
-    var file = new File([blob], nombre, { type: 'image/jpeg' });
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share({ files: [file] });
-        showToast('✓ Foto guardada');
-      } catch(e) {
-        if (e.name !== 'AbortError') descargarBlob(blob, nombre);
-      }
-    } else {
-      descargarBlob(blob, nombre);
-    }
-  }, 'image/jpeg', 0.95);
-}
-
-async function compartirArchivo(url, nombre) {
-  try {
-    var res = await fetch(url);
+    setProgress(8, 'Preparando fotografía...');
+    var res = await fetch(origUrl);
     var blob = await res.blob();
-    await guardarCanvas(document.getElementById('c-orig-v'), nombre);
+
+    var orientation = await detectOrientation(blob);
+    var fondo = FONDOS[bgIdx] || FONDOS[0];
+    var bgUrl = orientation === 'vertical' ? fondo.urlV : fondo.urlH;
+
+    setProgress(22, 'Procesando con Photoroom AI...');
+    var fd = new FormData();
+    fd.append('image_file', blob, 'photo.jpg');
+    fd.append('background_url', bgUrl);
+    fd.append('orientation', orientation);
+
+    var prRes = await fetch('/api/process-photo', { method: 'POST', body: fd });
+
+    if (!prRes.ok) {
+      var errText = await prRes.text();
+      throw new Error(errText);
+    }
+
+    setProgress(85, 'Preparando para descarga...');
+    aiBlob = await prRes.blob();
+
+    // Show processed image
+    var aiUrl = URL.createObjectURL(aiBlob);
+    var imgAI = document.getElementById('photo-ai');
+    imgAI.src = aiUrl;
+    imgAI.onload = function() {
+      document.getElementById('skeleton-ai').style.display = 'none';
+      imgAI.style.display = 'block';
+      document.getElementById('badge-ai').style.display = 'block';
+    };
+
+    setProgress(100, '¡Lista!');
+    setTimeout(function() {
+      document.getElementById('prog-wrap').style.display = 'none';
+      document.getElementById('btns-orig-only').style.display = 'none';
+      document.getElementById('btns-wrap').style.display = 'flex';
+      document.getElementById('btns-wrap').style.flexDirection = 'column';
+      document.getElementById('d2').classList.add('on');
+    }, 400);
+
   } catch(e) {
-    var a = document.createElement('a');
-    a.href = url; a.download = nombre; a.target = '_blank';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    console.error('Error Photoroom:', e);
+    setProgress(100, 'Error al procesar');
+    setTimeout(function() {
+      document.getElementById('prog-wrap').style.display = 'none';
+      document.getElementById('btns-orig-only').style.display = 'none';
+      document.getElementById('btns-wrap').style.display = 'flex';
+      document.getElementById('btns-wrap').style.flexDirection = 'column';
+    }, 500);
   }
 }
 
-function descargarBlob(blob, nombre) {
+async function guardarConShare(blob, nombre) {
+  var file = new File([blob], nombre, { type: 'image/jpeg' });
+  if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file] });
+      return true;
+    } catch(e) {
+      if (e.name === 'AbortError') return true;
+    }
+  }
+  // Fallback download
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url; a.download = nombre;
   document.body.appendChild(a); a.click();
   document.body.removeChild(a);
-  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
-  showToast('✓ Descargando foto');
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+  return true;
 }
 
 async function guardarTodo() {
-  showToast('Guardando las 4 fotos...');
-  if (resultados.bgH) await guardarCanvas(resultados.bgH, 'instante-fondo-horizontal.jpg');
-  await new Promise(function(r){ setTimeout(r, 800); });
-  if (resultados.bgV) await guardarCanvas(resultados.bgV, 'instante-fondo-stories.jpg');
-  await new Promise(function(r){ setTimeout(r, 800); });
-  if (resultados.origV) await guardarCanvas(resultados.origV, 'instante-original-stories.jpg');
-}
-
-function descargarOriginal() {
-  if (!fotoData) return;
-  var url = SB + '/storage/v1/object/public/' + BUCKET + '/' + fotoData.storage_path;
-  var a = document.createElement('a');
-  a.href = url; a.download = 'instante-original.jpg'; a.target = '_blank';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  showToast('Guardando tus fotos...');
+  if (aiBlob) {
+    await guardarConShare(aiBlob, 'instante-fondo-elegante.jpg');
+    await new Promise(function(r){ setTimeout(r, 800); });
+  }
+  // Save original
+  var origRes = await fetch(origUrl);
+  var origBlob = await origRes.blob();
+  await guardarConShare(origBlob, 'instante-original.jpg');
 }
 
 async function compartirIG() {
-  var canvas = resultados.bgV || resultados.bgH;
-  if (!canvas) { showToast('Espera a que cargue la foto'); return; }
-  canvas.toBlob(async function(blob) {
-    var file = new File([blob], 'instante-stories.jpg', { type: 'image/jpeg' });
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share({ files: [file], title: 'Mi foto · Instante' });
-      } catch(e) {
-        if (e.name !== 'AbortError') showToast('Guarda la foto primero y ábrela en Instagram');
-      }
-    } else {
-      showToast('Guarda la foto y ábrela desde tu galería para compartir en Instagram');
+  if (!aiBlob) { showToast('Espera a que cargue la foto'); return; }
+  var file = new File([aiBlob], 'instante-foto.jpg', { type: 'image/jpeg' });
+  if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], title: 'Mi foto · Instante' });
+    } catch(e) {
+      if (e.name !== 'AbortError') showToast('Guarda la foto y compártela desde tu galería');
     }
-  }, 'image/jpeg', 0.95);
+  } else {
+    showToast('Guarda la foto y ábrela en Instagram para compartir');
+  }
+}
+
+function descargarOriginal() {
+  if (!origUrl) return;
+  var a = document.createElement('a');
+  a.href = origUrl; a.download = 'instante-original.jpg'; a.target = '_blank';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 
 init();

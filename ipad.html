@@ -183,10 +183,23 @@ var EVENT = 'fatima-ethan-2026';
 var EVENT_NAME = 'Fátima & Ethan · 30 Mayo 2026';
 var GUEST_URL = 'https://foto-eventos-seven.vercel.app/invitado.html';
 var PHOTOROOM_ENDPOINT = '/api/process-photo';
+var SB_STORAGE = 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos';
 var FONDOS = [
-  { nombre: 'Jardín de rosas', url: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/Fondo%201.png' },
-  { nombre: 'Patio colonial',  url: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/Fondo%202.png' },
-  { nombre: 'Jardín dorado',   url: 'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/Fondo%203.png' }
+  {
+    nombre: 'Jardín de rosas',
+    urlH: SB_STORAGE + '/horizontal/Fondo%201.png',
+    urlV: SB_STORAGE + '/vertical/Fondo%201.png'
+  },
+  {
+    nombre: 'Patio colonial',
+    urlH: SB_STORAGE + '/horizontal/Fondo%202.png',
+    urlV: SB_STORAGE + '/vertical/Fondo%202.png'
+  },
+  {
+    nombre: 'Jardín dorado',
+    urlH: SB_STORAGE + '/horizontal/Fondo%203.png',
+    urlV: SB_STORAGE + '/vertical/Fondo%203.png'
+  }
 ];
 
 // ── ESTADO GLOBAL ───────────────────────
@@ -307,20 +320,27 @@ async function procesarFoto() {
     var res = await fetch(fotoUrl);
     var blob = await res.blob();
 
-    setProgress(35, 'Procesando con Photoroom AI...');
+    // Detect orientation
+    var orientation = await detectOrientation(blob);
+    console.log('Orientacion:', orientation);
+
+    setProgress(32, 'Procesando con Photoroom AI...');
     var fondo = FONDOS[estado.fondoIdx];
+    var bgUrl = orientation === 'vertical' ? fondo.urlV : fondo.urlH;
+
     var fd = new FormData();
     fd.append('image_file', blob, 'photo.jpg');
-    fd.append('background_url', fondo.url);
-    fd.append('output_format', 'jpeg');
+    fd.append('background_url', bgUrl);
+    fd.append('orientation', orientation);
 
-    var prRes = await fetch(PHOTOROOM_ENDPOINT, {
-      method: 'POST', body: fd
-    });
-    if (!prRes.ok) throw new Error('Photoroom: ' + prRes.status);
+    var prRes = await fetch(PHOTOROOM_ENDPOINT, { method: 'POST', body: fd });
+    if (!prRes.ok) {
+      var errText = await prRes.text();
+      throw new Error('Photoroom error: ' + errText);
+    }
     var processedBlob = await prRes.blob();
 
-    setProgress(72, 'Componiendo versión horizontal...');
+    setProgress(72, 'Finalizando...');
     var compuesto = await blobToCanvas(processedBlob);
 
     setProgress(88, 'Generando versión Stories...');
@@ -357,6 +377,18 @@ function blobToCanvas(blob) {
       resolve(c);
     };
     img.onerror = reject;
+    img.src = URL.createObjectURL(blob);
+  });
+}
+
+function detectOrientation(blob) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    img.onload = function() {
+      URL.revokeObjectURL(img.src);
+      resolve(img.width >= img.height ? 'horizontal' : 'vertical');
+    };
+    img.onerror = function() { resolve('horizontal'); };
     img.src = URL.createObjectURL(blob);
   });
 }
