@@ -45,7 +45,7 @@ export default async function handler(req) {
 
     prForm.append('padding', '0.05');
     prForm.append('background.scaling', 'fill');
-    prForm.append('export.format', 'jpeg');
+    prForm.append('export.format', 'png');
     prForm.append('export.quality', '92');
 
     const prRes = await fetch('https://image-api.photoroom.com/v2/edit', {
