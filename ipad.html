@@ -201,33 +201,30 @@ function go(p){
   });
 }
 
-// POLLING
+// POLLING — simple setInterval, no recursion
+var _polling = false;
 function poll(){
+  if(_polling) return; // prevent concurrent calls
+  _polling = true;
   fetch(SB+'/rest/v1/fotos?event_id=eq.'+EVENT+'&select=*&order=created_at.desc',{headers:sbH()})
     .then(function(r){return r.json()})
     .then(function(data){
       H('wt',data.length);
       H('wd',data.filter(function(f){return f.processed}).length);
-
-      // Auto-reset when guest scans QR
+      // Auto-reset when guest scans
       if(E.page==='pq' && E.foto){
         var cur=data.find(function(f){return f.id===E.foto.id});
         if(cur && cur.scanned){
-          setTimeout(function(){
-            E.foto=null; E.bgIdx=-1; E.lastId=null;
-            go('pw');
-          },2000);
+          setTimeout(function(){E.foto=null;E.bgIdx=-1;E.lastId=null;go('pw')},2000);
         }
       }
-
-      if(E.page!=='pw'){setTimeout(poll,3000);return}
-
+      if(E.page!=='pw'){_polling=false;return}
       var p=null;
       for(var i=0;i<data.length;i++){if(!data[i].processed){p=data[i];break}}
       if(p && p.id!==E.lastId){E.lastId=p.id;E.foto=p;showSelect(p)}
     })
-    .catch(function(){})
-    .finally(function(){setTimeout(poll,3000)});
+    .catch(function(e){console.log('poll err',e)})
+    .finally(function(){_polling=false});
 }
 
 // SHOW SELECTION
@@ -310,7 +307,10 @@ function prog(pct,txt){
   if(txt) document.getElementById('plbl').textContent=txt;
 }
 
+var _procesando = false;
 async function procesar(){
+  if(_procesando){console.log('Ya procesando, ignorando');return}
+  _procesando = true;
   try{
     prog(10,'Descargando fotografía...');
     var url=SB+'/storage/v1/object/public/'+BUCKET+'/'+E.foto.storage_path;
@@ -353,6 +353,8 @@ async function procesar(){
     console.error(e);
     alert('Error: '+e.message+'\nIntenta de nuevo.');
     go(E.orient==='vertical'?'sv':'sh');
+  } finally {
+    _procesando = false;
   }
 }
 
@@ -363,9 +365,10 @@ function mostrarQR(url){
   go('pq');
 }
 
-// INIT
+// INIT — poll every 4 seconds with setInterval
 go('pw');
-poll();
+poll(); // immediate first call
+setInterval(poll, 4000);
 </script>
 </body>
 </html>

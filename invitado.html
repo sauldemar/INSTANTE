@@ -154,28 +154,9 @@ async function init(){
 
     // Load AI result — already processed by iPad, just fetch from storage
     if(fotoData.result_path){
-      aiUrl=SB+'/storage/v1/object/public/'+BUCKET+'/'+fotoData.result_path;
-      var imgAI=document.getElementById('img-ai');
-      imgAI.onload=function(){
-        document.getElementById('sk-ai').style.display='none';
-        imgAI.style.display='block';
-        document.getElementById('badge-ai').style.display='block';
-        document.getElementById('d2').classList.add('on');
-        var btns=document.getElementById('btns');
-        btns.style.display='flex';
-        btns.style.flexDirection='column';
-      };
-      imgAI.onerror=function(){
-        document.getElementById('sk-ai').style.display='none';
-        showToast('No se pudo cargar la foto con fondo');
-        var btns=document.getElementById('btns');
-        btns.style.display='flex';
-        btns.style.flexDirection='column';
-      };
-      imgAI.src=aiUrl;
+      mostrarAI(SB+'/storage/v1/object/public/'+BUCKET+'/'+fotoData.result_path);
     } else {
-      // No result yet — wait and retry
-      document.getElementById('sk-ai').innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;padding:20px"><div style="font-size:12px;color:#7a7a72;text-align:center">Procesando tu foto...<br>Esto puede tomar unos segundos</div></div>';
+      document.getElementById('sk-ai').innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;gap:8px;padding:20px"><div style="font-size:12px;color:#7a7a72;text-align:center">Tu foto está siendo procesada...<br>Aparecerá en unos segundos</div></div>';
       esperarResultado(fotoId);
     }
 
@@ -185,31 +166,49 @@ async function init(){
   }
 }
 
-async function esperarResultado(fotoId){
+function esperarResultado(fotoId){
   var intentos=0;
-  var intervalo=setInterval(async function(){
+  var intervalo=setInterval(function(){
     intentos++;
-    if(intentos>20){clearInterval(intervalo);showToast('Tiempo de espera agotado');return}
-    try{
-      var r=await fetch(SB+'/rest/v1/fotos?id=eq.'+fotoId+'&select=result_path',{headers:sbH()});
-      var data=await r.json();
-      if(data&&data[0]&&data[0].result_path){
-        clearInterval(intervalo);
-        aiUrl=SB+'/storage/v1/object/public/'+BUCKET+'/'+data[0].result_path;
-        var imgAI=document.getElementById('img-ai');
-        imgAI.onload=function(){
-          document.getElementById('sk-ai').style.display='none';
-          imgAI.style.display='block';
-          document.getElementById('badge-ai').style.display='block';
-          document.getElementById('d2').classList.add('on');
-          var btns=document.getElementById('btns');
-          btns.style.display='flex';
-          btns.style.flexDirection='column';
-        };
-        imgAI.src=aiUrl;
-      }
-    }catch(e){}
-  },3000);
+    if(intentos>30){clearInterval(intervalo);mostrarSoloOriginal();return}
+    fetch(SB+'/rest/v1/fotos?id=eq.'+fotoId+'&select=result_path',{headers:sbH()})
+      .then(function(r){return r.json()})
+      .then(function(data){
+        if(data&&data[0]&&data[0].result_path){
+          clearInterval(intervalo);
+          mostrarAI(SB+'/storage/v1/object/public/'+BUCKET+'/'+data[0].result_path);
+        }
+      }).catch(function(){});
+  },2000);
+}
+
+function mostrarAI(url){
+  aiUrl=url;
+  var imgAI=document.getElementById('img-ai');
+  imgAI.onload=function(){
+    document.getElementById('sk-ai').style.display='none';
+    imgAI.style.display='block';
+    document.getElementById('badge-ai').style.display='block';
+    document.getElementById('d2').classList.add('on');
+    mostrarBotones();
+  };
+  imgAI.onerror=function(){
+    document.getElementById('sk-ai').style.display='none';
+    mostrarBotones();
+  };
+  imgAI.src=url+'?t='+Date.now();
+}
+
+function mostrarSoloOriginal(){
+  document.getElementById('sk-ai').style.display='none';
+  document.getElementById('sk-ai').innerHTML='<div style="padding:20px;text-align:center;color:#b0b0a6;font-size:12px">No disponible</div>';
+  mostrarBotones();
+}
+
+function mostrarBotones(){
+  var b=document.getElementById('btns');
+  b.style.display='flex';
+  b.style.flexDirection='column';
 }
 
 async function guardarBlob(url, nombre){
