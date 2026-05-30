@@ -10,7 +10,7 @@
 html,body{height:100%}
 body{font-family:'DM Sans',sans-serif;background:#faf9f6;color:#0d0d0b;min-height:100vh;display:flex;flex-direction:column;align-items:center}
 .wrap{width:100%;max-width:420px;min-height:100vh;background:#faf9f6;display:flex;flex-direction:column}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 
@@ -19,39 +19,39 @@ body{font-family:'DM Sans',sans-serif;background:#faf9f6;color:#0d0d0b;min-heigh
 
 .hdr{padding:18px 22px 14px;border-bottom:1px solid rgba(13,13,11,0.1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .brand{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase}
-.brand-dot{color:#c9a84c}
-.evlbl{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7a72;text-align:right;max-width:160px;line-height:1.4}
+.gold{color:#c9a84c}
+.evl{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7a72;text-align:right;max-width:160px;line-height:1.4}
 
 .content{padding:20px;display:flex;flex-direction:column;gap:14px;flex:1}
-.title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;letter-spacing:-0.3px}
-.subtitle{font-size:12px;color:#7a7a72;margin-top:-6px}
+.ttl{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;letter-spacing:-0.3px}
+.sub{font-size:12px;color:#7a7a72;margin-top:-6px}
 
-.photo-card{border-radius:14px;overflow:hidden;border:1px solid rgba(13,13,11,0.1);background:#e8e5de;position:relative}
-.photo-card img{width:100%;display:block;object-fit:cover}
-.badge{position:absolute;top:10px;left:10px;background:rgba(13,13,11,0.7);color:#fff;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;backdrop-filter:blur(4px)}
-.badge.gold{background:rgba(201,168,76,0.9)}
+.card{border-radius:14px;overflow:hidden;border:1px solid rgba(13,13,11,0.1);background:#e8e5de;position:relative}
+.card img{width:100%;display:block;object-fit:cover}
+.badge{position:absolute;top:10px;left:10px;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;backdrop-filter:blur(4px)}
+.badge-w{background:rgba(13,13,11,0.7);color:#fff}
+.badge-g{background:rgba(201,168,76,0.9);color:#fff}
 
-.skeleton{background:linear-gradient(90deg,#e8e5de 25%,#f0ede6 50%,#e8e5de 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-.sk-photo{height:200px;border-radius:14px}
+.sk{background:linear-gradient(90deg,#e8e5de 25%,#f0ede6 50%,#e8e5de 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:14px;height:200px;display:flex;align-items:center;justify-content:center}
+.sk span{font-size:12px;color:#7a7a72;text-align:center;line-height:1.6;padding:20px}
 
-.divider{display:flex;align-items:center;gap:10px}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(13,13,11,0.1)}
-.divider span{font-size:10px;color:#b0b0a6;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap}
+.div{display:flex;align-items:center;gap:10px}
+.div::before,.div::after{content:'';flex:1;height:1px;background:rgba(13,13,11,0.1)}
+.div span{font-size:10px;color:#b0b0a6;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap}
 
-.btn-main{background:#0d0d0b;color:#faf9f6;border:none;border-radius:14px;padding:16px;font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;font-family:'DM Sans',sans-serif;width:100%;cursor:pointer;transition:opacity 0.15s;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-main:active{opacity:0.8}
-.btn-outline{background:transparent;color:#0d0d0b;border:1px solid rgba(13,13,11,0.22);border-radius:14px;padding:14px;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;font-family:'DM Sans',sans-serif;width:100%;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 0.15s}
-.btn-outline:active{background:#f3f1ec}
+.btn1{background:#0d0d0b;color:#faf9f6;border:none;border-radius:14px;padding:16px;font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;font-family:'DM Sans',sans-serif;width:100%;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn1:active{opacity:0.8}
+.btn2{background:transparent;color:#0d0d0b;border:1px solid rgba(13,13,11,0.22);border-radius:14px;padding:14px;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;font-family:'DM Sans',sans-serif;width:100%;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn2:active{background:#f3f1ec}
 
 .loading-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
 .spinner{width:32px;height:32px;border:1.5px solid rgba(13,13,11,0.1);border-top-color:#c9a84c;border-radius:50%;animation:spin 0.8s linear infinite}
 
 .error-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:40px;text-align:center}
-.error-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:#7a7a72}
+.error-t{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:#7a7a72}
 
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#0d0d0b;color:#faf9f6;padding:11px 22px;border-radius:20px;font-size:12px;opacity:0;transition:all 0.3s;z-index:999;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
 .dots{display:flex;justify-content:center;gap:5px;padding:12px;flex-shrink:0;border-top:1px solid rgba(13,13,11,0.08)}
 .dot{width:5px;height:5px;border-radius:50%;background:rgba(13,13,11,0.2);transition:all 0.25s}
 .dot.on{background:#0d0d0b;width:16px;border-radius:3px}
@@ -60,56 +60,55 @@ body{font-family:'DM Sans',sans-serif;background:#faf9f6;color:#0d0d0b;min-heigh
 <body>
 <div class="wrap">
 
-  <div class="screen active" id="s-loading">
-    <div class="hdr"><div class="brand">Inst<span class="brand-dot">a</span>nte</div></div>
+  <div class="screen active" id="s-load">
+    <div class="hdr"><div class="brand">Inst<span class="gold">a</span>nte</div></div>
     <div class="loading-wrap">
       <div class="spinner"></div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:#7a7a72">Cargando tu foto...</div>
     </div>
   </div>
 
-  <div class="screen" id="s1">
+  <div class="screen" id="s-main">
     <div class="hdr">
-      <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
-      <div class="evlbl" id="ev1"></div>
+      <div class="brand">Inst<span class="gold">a</span>nte</div>
+      <div class="evl" id="evl"></div>
     </div>
     <div class="content">
-      <div>
-        <div class="title">Tu fotografía</div>
-        <div class="subtitle">Tu recuerdo del evento</div>
-      </div>
+      <div><div class="ttl">Tu fotografía</div><div class="sub">Tu recuerdo del evento</div></div>
 
       <!-- Foto con fondo IA -->
       <div>
         <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#b0b0a6;margin-bottom:7px;font-weight:500">Con fondo elegante</div>
-        <div class="photo-card" id="card-ai">
-          <div class="skeleton sk-photo" id="sk-ai"></div>
-          <img id="img-ai" src="" alt="" style="display:none">
-          <div class="badge gold" id="badge-ai" style="display:none">✦ Fondo IA</div>
+        <div id="ai-wrap">
+          <div class="sk" id="sk-ai"><span>Tu foto está siendo procesada...<br>Aparecerá aquí en unos segundos</span></div>
+          <div class="card" id="card-ai" style="display:none">
+            <img id="img-ai" src="" alt="">
+            <div class="badge badge-g">✦ Fondo elegante</div>
+          </div>
         </div>
       </div>
 
-      <div class="divider"><span>Foto original</span></div>
+      <div class="div"><span>Foto original</span></div>
 
       <!-- Foto original -->
-      <div class="photo-card">
+      <div class="card">
         <img id="img-orig" src="" alt="">
-        <div class="badge">Fondo blanco</div>
+        <div class="badge badge-w">Fondo blanco</div>
       </div>
 
       <div style="flex:1;min-height:8px"></div>
 
       <div id="btns" style="display:none;flex-direction:column;gap:10px">
-        <button class="btn-main" onclick="guardarAmbas()">⬇ Guardar fotos en galería</button>
-        <button class="btn-outline" onclick="abrirInstagram()">📸 Compartir en Instagram</button>
+        <button class="btn1" onclick="guardarAmbas()">⬇ Guardar fotos en galería</button>
+        <button class="btn2" onclick="compartirIG()">📸 Compartir en Instagram</button>
       </div>
     </div>
   </div>
 
-  <div class="screen" id="s-error">
-    <div class="hdr"><div class="brand">Inst<span class="brand-dot">a</span>nte</div></div>
+  <div class="screen" id="s-err">
+    <div class="hdr"><div class="brand">Inst<span class="gold">a</span>nte</div></div>
     <div class="error-wrap">
-      <div class="error-title">Foto no encontrada</div>
+      <div class="error-t">Foto no encontrada</div>
       <div style="font-size:12px;color:#b0b0a6" id="errmsg">El enlace puede haber expirado.</div>
     </div>
   </div>
@@ -122,137 +121,124 @@ body{font-family:'DM Sans',sans-serif;background:#faf9f6;color:#0d0d0b;min-heigh
 var SB='https://egvtxhtfgkwfyirklkbn.supabase.co';
 var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVndnR4aHRmZ2t3Znlpcmtsa2JuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDM4NTksImV4cCI6MjA5NDcxOTg1OX0.kQ5q1nKAQ847Pm_7jsZ9-NVGKg3xRoqGpUC-PasQqQc';
 var BUCKET='fotos-eventos';
-
-var fotoData=null, origUrl=null, aiUrl=null, toastT;
+var origUrl=null, aiUrl=null, fotoId=null, toastT, pollT;
 
 function sbH(){return{'apikey':KEY,'Authorization':'Bearer '+KEY}}
-function goScreen(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});document.getElementById(id).classList.add('active')}
-function showToast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show')},2800)}
+function gs(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});document.getElementById(id).classList.add('active')}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show')},2800)}
 
 async function init(){
-  var params=new URLSearchParams(window.location.search);
-  var fotoId=params.get('foto');
-  if(!fotoId){goScreen('s-error');return}
+  var p=new URLSearchParams(window.location.search);
+  fotoId=p.get('foto');
+  if(!fotoId){gs('s-err');return}
 
   try{
     var r=await fetch(SB+'/rest/v1/fotos?id=eq.'+fotoId+'&select=*',{headers:sbH()});
     var data=await r.json();
-    if(!data||!data.length){goScreen('s-error');return}
-    fotoData=data[0];
+    if(!data||!data.length){gs('s-err');return}
+    var foto=data[0];
 
-    // Mark as scanned
+    // Mark scanned
     fetch(SB+'/rest/v1/fotos?id=eq.'+fotoId,{
-      method:'PATCH',headers:Object.assign({},sbH(),{'Content-Type':'application/json','Prefer':'return=minimal'}),
+      method:'PATCH',
+      headers:Object.assign({},sbH(),{'Content-Type':'application/json','Prefer':'return=minimal'}),
       body:JSON.stringify({scanned:true})
     }).catch(function(){});
 
-    origUrl=SB+'/storage/v1/object/public/'+BUCKET+'/'+fotoData.storage_path;
-    document.getElementById('ev1').textContent='Fátima & Ethan · 30 Mayo 2026';
+    origUrl=SB+'/storage/v1/object/public/'+BUCKET+'/'+foto.storage_path;
+    document.getElementById('evl').textContent='Fátima & Ethan · 30 Mayo 2026';
     document.getElementById('img-orig').src=origUrl;
+    gs('s-main');
 
-    goScreen('s1');
-
-    // Load AI result — already processed by iPad, just fetch from storage
-    if(fotoData.result_path){
-      mostrarAI(SB+'/storage/v1/object/public/'+BUCKET+'/'+fotoData.result_path);
+    if(foto.result_path){
+      // Result already ready — show immediately
+      mostrarAI(SB+'/storage/v1/object/public/'+BUCKET+'/'+foto.result_path);
     } else {
-      document.getElementById('sk-ai').innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;gap:8px;padding:20px"><div style="font-size:12px;color:#7a7a72;text-align:center">Tu foto está siendo procesada...<br>Aparecerá en unos segundos</div></div>';
-      esperarResultado(fotoId);
+      // Poll for result every 2 seconds
+      pollT=setInterval(function(){
+        fetch(SB+'/rest/v1/fotos?id=eq.'+fotoId+'&select=result_path',{headers:sbH()})
+          .then(function(r){return r.json()})
+          .then(function(d){
+            if(d&&d[0]&&d[0].result_path){
+              clearInterval(pollT);
+              mostrarAI(SB+'/storage/v1/object/public/'+BUCKET+'/'+d[0].result_path);
+            }
+          }).catch(function(){});
+      },2000);
+      // Stop polling after 2 minutes
+      setTimeout(function(){clearInterval(pollT);mostrarBtns()},120000);
     }
-
   }catch(e){
-    goScreen('s-error');
+    gs('s-err');
     document.getElementById('errmsg').textContent='Error de conexión. Verifica tu internet.';
   }
 }
 
-function esperarResultado(fotoId){
-  var intentos=0;
-  var intervalo=setInterval(function(){
-    intentos++;
-    if(intentos>30){clearInterval(intervalo);mostrarSoloOriginal();return}
-    fetch(SB+'/rest/v1/fotos?id=eq.'+fotoId+'&select=result_path',{headers:sbH()})
-      .then(function(r){return r.json()})
-      .then(function(data){
-        if(data&&data[0]&&data[0].result_path){
-          clearInterval(intervalo);
-          mostrarAI(SB+'/storage/v1/object/public/'+BUCKET+'/'+data[0].result_path);
-        }
-      }).catch(function(){});
-  },2000);
-}
-
 function mostrarAI(url){
-  aiUrl=url;
-  var imgAI=document.getElementById('img-ai');
-  imgAI.onload=function(){
+  aiUrl=url+'?t='+Date.now();
+  var img=document.getElementById('img-ai');
+  img.onload=function(){
     document.getElementById('sk-ai').style.display='none';
-    imgAI.style.display='block';
-    document.getElementById('badge-ai').style.display='block';
+    document.getElementById('card-ai').style.display='block';
     document.getElementById('d2').classList.add('on');
-    mostrarBotones();
+    mostrarBtns();
   };
-  imgAI.onerror=function(){
-    document.getElementById('sk-ai').style.display='none';
-    mostrarBotones();
+  img.onerror=function(){
+    // Retry once after 2 seconds
+    setTimeout(function(){
+      img.src=url+'?t='+Date.now();
+    },2000);
   };
-  imgAI.src=url+'?t='+Date.now();
+  img.src=aiUrl;
 }
 
-function mostrarSoloOriginal(){
-  document.getElementById('sk-ai').style.display='none';
-  document.getElementById('sk-ai').innerHTML='<div style="padding:20px;text-align:center;color:#b0b0a6;font-size:12px">No disponible</div>';
-  mostrarBotones();
-}
-
-function mostrarBotones(){
+function mostrarBtns(){
   var b=document.getElementById('btns');
   b.style.display='flex';
   b.style.flexDirection='column';
 }
 
-async function guardarBlob(url, nombre){
+async function guardarBlob(url,nombre){
   try{
-    var res=await fetch(url);
-    var blob=await res.blob();
+    var r=await fetch(url);
+    var blob=await r.blob();
     var file=new File([blob],nombre,{type:blob.type||'image/jpeg'});
     if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
-      try{await navigator.share({files:[file]});return true}catch(e){if(e.name==='AbortError')return true}
+      try{await navigator.share({files:[file]});return}catch(e){if(e.name==='AbortError')return}
     }
     var u=URL.createObjectURL(blob);
     var a=document.createElement('a');
-    a.href=u; a.download=nombre;
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    a.href=u;a.download=nombre;
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
     setTimeout(function(){URL.revokeObjectURL(u)},1500);
-    return true;
-  }catch(e){return false}
+  }catch(e){toast('Error al guardar')}
 }
 
 async function guardarAmbas(){
-  showToast('Guardando tus fotos...');
-  if(aiUrl) await guardarBlob(aiUrl,'instante-fondo-elegante.jpg');
+  toast('Guardando tus fotos...');
+  if(aiUrl)await guardarBlob(aiUrl,'instante-fondo-elegante.jpg');
   await new Promise(function(r){setTimeout(r,900)});
-  await guardarBlob(origUrl,'instante-original.jpg');
-  showToast('✓ Fotos guardadas');
+  if(origUrl)await guardarBlob(origUrl,'instante-original.jpg');
+  toast('✓ Fotos guardadas');
 }
 
-async function abrirInstagram(){
-  if(aiUrl){
-    // Save photo first then open Instagram
-    await guardarBlob(aiUrl,'instante-instagram.jpg');
-    setTimeout(function(){
-      // Try to open Instagram app
-      var start=Date.now();
-      window.location.href='instagram://';
-      setTimeout(function(){
-        if(Date.now()-start<2000){
-          window.open('https://www.instagram.com','_blank');
-        }
-      },1500);
-    },800);
-  } else {
-    window.location.href='instagram://';
-  }
+async function compartirIG(){
+  if(!aiUrl){toast('Espera a que cargue la foto con fondo');return}
+  try{
+    var r=await fetch(aiUrl);
+    var blob=await r.blob();
+    var file=new File([blob],'instante.jpg',{type:'image/jpeg'});
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:'Mi foto · Instante'});
+    }else{
+      // Download then open Instagram
+      var u=URL.createObjectURL(blob);
+      var a=document.createElement('a');
+      a.href=u;a.download='instante.jpg';
+      document.body.appendChild(a);a.click();document.body.removeChild(a);
+      setTimeout(function(){URL.revokeObjectURL(u);window.location.href='instagram://'},1200);
+    }
+  }catch(e){if(e.name!=='AbortError')window.open('https://www.instagram.com','_blank')}
 }
 
 init();

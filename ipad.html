@@ -8,98 +8,96 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:#faf9f6;color:#0d0d0b}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes breathe{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.04);opacity:1}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.05);opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.25}}
 
+/* PAGES */
 .page{display:none;width:100%;height:100vh;flex-direction:column}
 .page.active{display:flex;animation:fadeIn 0.3s ease}
 
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid rgba(13,13,11,0.1);flex-shrink:0}
+/* HEADER */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 36px;border-bottom:1px solid rgba(13,13,11,0.1);flex-shrink:0}
 .brand{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase}
-.brand-dot{color:#c9a84c}
-.evname{font-size:14px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7a72}
-.dots{display:flex;gap:6px}
-.dot{width:7px;height:7px;border-radius:50%;background:rgba(13,13,11,0.2);transition:all 0.3s}
-.dot.on{background:#0d0d0b;width:22px;border-radius:4px}
+.gold{color:#c9a84c}
+.evn{font-size:14px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7a72}
+.sdots{display:flex;gap:6px}
+.sd{width:7px;height:7px;border-radius:50%;background:rgba(13,13,11,0.18);transition:all 0.3s}
+.sd.on{background:#0d0d0b;width:22px;border-radius:4px}
 
 /* WAIT */
-#pw .body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:48px}
-.wicon{width:84px;height:84px;border:1px solid rgba(13,13,11,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;animation:breathe 3s ease-in-out infinite}
-.wtitle{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;text-align:center;line-height:1.1;letter-spacing:-1px}
-.wsub{font-size:17px;color:#7a7a72;text-align:center;line-height:1.6}
-.wpulse{display:flex;align-items:center;gap:10px;font-size:14px;color:#b0b0a6;letter-spacing:0.08em;text-transform:uppercase}
-.pdot{width:9px;height:9px;border-radius:50%;background:#c9a84c;animation:pulse 1.8s ease-in-out infinite}
-.stats{display:flex;gap:44px;border:1px solid rgba(13,13,11,0.1);border-radius:16px;padding:22px 48px}
+#pw .body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:48px}
+.wi{width:84px;height:84px;border:1px solid rgba(13,13,11,0.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;animation:breathe 3s ease-in-out infinite}
+.wt{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;text-align:center;line-height:1.1;letter-spacing:-1px}
+.ws{font-size:17px;color:#7a7a72;text-align:center;line-height:1.6}
+.wp{display:flex;align-items:center;gap:10px;font-size:14px;color:#b0b0a6;letter-spacing:0.08em;text-transform:uppercase}
+.pd{width:9px;height:9px;border-radius:50%;background:#c9a84c;animation:pulse 1.8s ease-in-out infinite}
+.stbox{display:flex;gap:44px;border:1px solid rgba(13,13,11,0.1);border-radius:16px;padding:22px 48px}
 .stn{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;letter-spacing:-1px;text-align:center}
 .stl{font-size:13px;color:#7a7a72;letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;text-align:center}
 
-/* SELECT HORIZONTAL */
+/* SELECT H - foto arriba, fondos abajo */
 #sh .body{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.photo-top{position:relative;background:#e8e5de;overflow:hidden;flex-shrink:0}
-.photo-top img{width:100%;height:100%;object-fit:contain;display:block;background:#e8e5de}
-.sh-label{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;padding:18px 32px 6px;flex-shrink:0}
-.sh-sub{font-size:16px;color:#7a7a72;padding:0 32px 14px;flex-shrink:0}
-.fondos-h{display:flex;gap:16px;padding:0 32px 20px;flex-shrink:0}
-.bgc{flex:1;border-radius:14px;overflow:hidden;cursor:pointer;border:3px solid transparent;transition:all 0.2s;position:relative}
+.ptop{background:#1a1a18;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.ptop img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.sh-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;padding:16px 32px 4px;flex-shrink:0}
+.sh-sub{font-size:15px;color:#7a7a72;padding:0 32px 12px;flex-shrink:0}
+.fh{display:flex;gap:14px;padding:0 32px;flex-shrink:0;flex:1;min-height:0}
+.bgc{flex:1;border-radius:14px;overflow:hidden;cursor:pointer;border:3px solid transparent;transition:all 0.2s;position:relative;display:flex;flex-direction:column}
 .bgc:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(13,13,11,0.12)}
 .bgc.sel{border-color:#0d0d0b}
-.bgc.sel::after{content:'✓';position:absolute;top:8px;right:8px;width:28px;height:28px;background:#0d0d0b;color:#fff;border-radius:50%;font-size:14px;display:flex;align-items:center;justify-content:center}
-.bgi{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
-.bgn{font-size:14px;font-weight:500;padding:9px 10px;background:rgba(255,255,255,0.93);color:#0d0d0b;text-align:center}
-.btn-ok{background:#0d0d0b;color:#faf9f6;border:none;border-radius:14px;padding:20px;font-size:16px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif;cursor:pointer;transition:opacity 0.15s;margin:0 32px 24px;flex-shrink:0}
-.btn-ok:disabled{opacity:0.35;cursor:not-allowed}
+.bgc.sel::after{content:'✓';position:absolute;top:8px;right:8px;width:28px;height:28px;background:#0d0d0b;color:#fff;border-radius:50%;font-size:14px;display:flex;align-items:center;justify-content:center;z-index:1}
+.bgc img{width:100%;flex:1;object-fit:cover;display:block}
+.bgcn{font-size:14px;font-weight:500;padding:9px 10px;background:rgba(255,255,255,0.95);color:#0d0d0b;text-align:center;flex-shrink:0}
+.btnok{background:#0d0d0b;color:#faf9f6;border:none;border-radius:14px;padding:20px;font-size:16px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif;cursor:pointer;margin:16px 32px 24px;flex-shrink:0}
+.btnok:disabled{opacity:0.35;cursor:not-allowed}
 
-/* SELECT VERTICAL */
+/* SELECT V - foto izq, fondos der */
 #sv .body{flex:1;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
-.photo-left{background:#e8e5de;overflow:hidden;position:relative}
-.photo-left img{width:100%;height:100%;object-fit:contain;display:block;background:#e8e5de}
-.sel-right{display:flex;flex-direction:column;padding:28px 32px;gap:16px;border-left:1px solid rgba(13,13,11,0.1)}
-.sr-title{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;line-height:1.2;letter-spacing:-0.5px}
-.sr-sub{font-size:16px;color:#7a7a72}
-.fondos-v{display:flex;flex-direction:column;gap:12px;flex:1}
-.bgcv{border-radius:12px;overflow:hidden;cursor:pointer;border:3px solid transparent;transition:all 0.2s;position:relative;display:flex;align-items:center;gap:0;background:#f3f1ec}
+.pleft{background:#1a1a18;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.pleft img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.sr{display:flex;flex-direction:column;padding:28px 32px;gap:14px;border-left:1px solid rgba(13,13,11,0.1);overflow:hidden}
+.sr-t{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;line-height:1.2;flex-shrink:0}
+.sr-s{font-size:15px;color:#7a7a72;flex-shrink:0}
+.fv{display:flex;flex-direction:column;gap:10px;flex:1;min-height:0;overflow:hidden}
+.bgcv{border-radius:12px;overflow:hidden;cursor:pointer;border:3px solid transparent;transition:all 0.2s;position:relative;display:flex;align-items:center;background:#f3f1ec;flex:1}
 .bgcv:hover{border-color:rgba(13,13,11,0.3)}
 .bgcv.sel{border-color:#0d0d0b}
 .bgcv.sel::after{content:'✓';position:absolute;top:8px;right:10px;width:26px;height:26px;background:#0d0d0b;color:#fff;border-radius:50%;font-size:13px;display:flex;align-items:center;justify-content:center}
-.bgiv{width:90px;height:68px;object-fit:cover;flex-shrink:0;border-radius:8px;margin:8px}
-.bgnv{font-size:16px;font-weight:500;color:#0d0d0b;padding:0 12px}
-.btn-ok-v{background:#0d0d0b;color:#faf9f6;border:none;border-radius:14px;padding:18px;font-size:16px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif;cursor:pointer;transition:opacity 0.15s;flex-shrink:0}
-.btn-ok-v:disabled{opacity:0.35;cursor:not-allowed}
+.bgcv img{width:80px;height:100%;object-fit:cover;flex-shrink:0}
+.bgcvn{font-size:16px;font-weight:500;color:#0d0d0b;padding:0 14px}
+.btnokv{background:#0d0d0b;color:#faf9f6;border:none;border-radius:14px;padding:18px;font-size:16px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif;cursor:pointer;flex-shrink:0}
+.btnokv:disabled{opacity:0.35;cursor:not-allowed}
 
 /* PROCESSING */
 #pp .body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:48px}
 .spinner{width:56px;height:56px;border:2px solid rgba(13,13,11,0.1);border-top-color:#c9a84c;border-radius:50%;animation:spin 0.9s linear infinite}
-.ptitle{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300}
-.psub{font-size:16px;color:#7a7a72}
+.pt{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300}
+.ps{font-size:16px;color:#7a7a72}
 .ptrack{width:300px;height:3px;background:rgba(13,13,11,0.1);border-radius:10px;overflow:hidden}
 .pfill{height:100%;background:linear-gradient(90deg,#c9a84c,#0d0d0b);border-radius:10px;transition:width 0.3s;width:0%}
 
 /* QR */
 #pq .body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:48px}
-.qt{font-family:'Cormorant Garamond',serif;font-size:54px;font-weight:300;text-align:center;line-height:1.1;letter-spacing:-1px}
-.qs{font-size:18px;color:#7a7a72;text-align:center;line-height:1.7}
-.qlbl{font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:#b0b0a6}
+.qt{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;text-align:center;line-height:1.1;letter-spacing:-1px}
+.qs{font-size:18px;color:#7a7a72;text-align:center;line-height:1.7;max-width:400px}
+.ql{font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:#b0b0a6}
 .qbox{background:#fff;border:1px solid rgba(13,13,11,0.1);border-radius:22px;padding:24px}
-.qinstr{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:#b0b0a6;text-align:center}
+.qi{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:#b0b0a6;text-align:center}
 </style>
 </head>
 <body>
 
 <!-- ESPERA -->
 <div class="page active" id="pw">
-  <div class="hdr">
-    <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
-    <div class="evname" id="ev0"></div>
-    <div class="dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
-  </div>
+  <div class="hdr"><div class="brand">Inst<span class="gold">a</span>nte</div><div class="evn" id="e0"></div><div class="sdots"><div class="sd on"></div><div class="sd"></div><div class="sd"></div></div></div>
   <div class="body">
-    <div class="wicon">📷</div>
-    <div class="wtitle">Esperando<br>fotografía</div>
-    <div class="wsub">El operador tomará la foto y aparecerá<br>aquí automáticamente</div>
-    <div class="wpulse"><div class="pdot"></div>Conectado · Escuchando</div>
-    <div class="stats">
+    <div class="wi">📷</div>
+    <div class="wt">Esperando<br>fotografía</div>
+    <div class="ws">El operador tomará la foto y aparecerá<br>aquí automáticamente</div>
+    <div class="wp"><div class="pd"></div>Conectado · Escuchando</div>
+    <div class="stbox">
       <div><div class="stn" id="wt">0</div><div class="stl">Fotos tomadas</div></div>
       <div style="border-left:1px solid rgba(13,13,11,0.1);padding-left:44px"><div class="stn" id="wd">0</div><div class="stl">Completadas</div></div>
     </div>
@@ -108,66 +106,50 @@ html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;backgroun
 
 <!-- SELECCIÓN HORIZONTAL -->
 <div class="page" id="sh">
-  <div class="hdr">
-    <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
-    <div class="evname" id="ev1"></div>
-    <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
-  </div>
+  <div class="hdr"><div class="brand">Inst<span class="gold">a</span>nte</div><div class="evn" id="e1"></div><div class="sdots"><div class="sd on"></div><div class="sd on"></div><div class="sd"></div></div></div>
   <div class="body">
-    <div class="photo-top" style="height:42vh"><img id="ph" src="" alt=""></div>
-    <div class="sh-label">Elige tu fondo favorito</div>
+    <div class="ptop" style="height:40vh"><img id="ph" src="" alt=""></div>
+    <div class="sh-title">Elige tu fondo favorito</div>
     <div class="sh-sub">Toca el fondo que más te guste</div>
-    <div class="fondos-h" id="fh"></div>
-    <button class="btn-ok" id="bh" onclick="confirmar()" disabled>Selecciona un fondo para continuar</button>
+    <div class="fh" id="fh"></div>
+    <button class="btnok" id="bh" onclick="confirmar()" disabled>Selecciona un fondo para continuar</button>
   </div>
 </div>
 
 <!-- SELECCIÓN VERTICAL -->
 <div class="page" id="sv">
-  <div class="hdr">
-    <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
-    <div class="evname" id="ev2"></div>
-    <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
-  </div>
+  <div class="hdr"><div class="brand">Inst<span class="gold">a</span>nte</div><div class="evn" id="e2"></div><div class="sdots"><div class="sd on"></div><div class="sd on"></div><div class="sd"></div></div></div>
   <div class="body">
-    <div class="photo-left"><img id="pv" src="" alt=""></div>
-    <div class="sel-right">
-      <div class="sr-title">Elige tu<br>fondo favorito</div>
-      <div class="sr-sub">Toca el fondo que más te guste</div>
-      <div class="fondos-v" id="fv"></div>
-      <button class="btn-ok-v" id="bv" onclick="confirmar()" disabled>Selecciona un fondo</button>
+    <div class="pleft"><img id="pv" src="" alt=""></div>
+    <div class="sr">
+      <div class="sr-t">Elige tu<br>fondo favorito</div>
+      <div class="sr-s">Toca el fondo que más te guste</div>
+      <div class="fv" id="fv"></div>
+      <button class="btnokv" id="bv" onclick="confirmar()" disabled>Selecciona un fondo</button>
     </div>
   </div>
 </div>
 
 <!-- PROCESANDO -->
 <div class="page" id="pp">
-  <div class="hdr">
-    <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
-    <div class="evname" id="ev3"></div>
-    <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
-  </div>
+  <div class="hdr"><div class="brand">Inst<span class="gold">a</span>nte</div><div class="evn" id="e3"></div><div class="sdots"><div class="sd on"></div><div class="sd on"></div><div class="sd on"></div></div></div>
   <div class="body">
     <div class="spinner"></div>
-    <div class="ptitle">Procesando fotografía</div>
-    <div class="psub" id="plbl">Iniciando...</div>
+    <div class="pt">Procesando fotografía</div>
+    <div class="ps" id="plbl">Iniciando...</div>
     <div class="ptrack"><div class="pfill" id="pfill"></div></div>
   </div>
 </div>
 
 <!-- QR -->
 <div class="page" id="pq">
-  <div class="hdr">
-    <div class="brand">Inst<span class="brand-dot">a</span>nte</div>
-    <div class="evname" id="ev4"></div>
-    <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
-  </div>
+  <div class="hdr"><div class="brand">Inst<span class="gold">a</span>nte</div><div class="evn" id="e4"></div><div class="sdots"><div class="sd on"></div><div class="sd on"></div><div class="sd on"></div></div></div>
   <div class="body">
     <div class="qt">Tu foto<br>está lista ✦</div>
-    <div class="qs">Escanea el código QR con tu celular<br>para descargar tu fotografía</div>
-    <div class="qlbl">↓ Apunta la cámara aquí ↓</div>
+    <div class="qs">Escanea el código QR con tu celular para descargar tu fotografía</div>
+    <div class="ql">↓ Apunta la cámara aquí ↓</div>
     <div class="qbox" id="qr"></div>
-    <div class="qinstr">Acerca tu celular al código</div>
+    <div class="qi">Acerca tu celular al código</div>
   </div>
 </div>
 
@@ -179,7 +161,6 @@ var BUCKET='fotos-eventos';
 var EVENT='fatima-ethan-2026';
 var EVNAME='Fátima & Ethan · 30 Mayo 2026';
 var GUEST='https://foto-eventos-seven.vercel.app/invitado.html';
-var PR='/api/process-photo';
 
 var FONDOS=[
   {n:'Jardín de rosas',h:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/horizontal/Fondo%201.png',v:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/vertical/Fondo%201.png'},
@@ -187,188 +168,204 @@ var FONDOS=[
   {n:'Jardín dorado',h:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/horizontal/Fondo%203.png',v:'https://egvtxhtfgkwfyirklkbn.supabase.co/storage/v1/object/public/fotos-eventos/fatima-ethan-2026/Fondos/vertical/Fondo%203.png'}
 ];
 
-var E={page:'wait',lastId:null,foto:null,bgIdx:-1,orient:'horizontal'};
-function sbH(){return{'apikey':KEY,'Authorization':'Bearer '+KEY}}
-function H(k,v){document.getElementById(k).textContent=v}
+// STATE
+var currentPage='pw';
+var lastShownId=null;
+var currentFoto=null;
+var currentOrient='horizontal';
+var currentBg=-1;
+var isProcessing=false;
 
-function go(p){
+function sbH(){return{'apikey':KEY,'Authorization':'Bearer '+KEY}}
+
+function goPage(p){
   document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active')});
   document.getElementById(p).classList.add('active');
-  E.page=p;
-  ['ev0','ev1','ev2','ev3','ev4'].forEach(function(id){
+  currentPage=p;
+  // Set event name everywhere
+  ['e0','e1','e2','e3','e4'].forEach(function(id){
     var el=document.getElementById(id);
-    if(el) el.textContent=EVNAME;
+    if(el)el.textContent=EVNAME;
   });
 }
 
-// POLLING — simple setInterval, no recursion
-var _polling = false;
-function poll(){
-  if(_polling) return; // prevent concurrent calls
-  _polling = true;
-  fetch(SB+'/rest/v1/fotos?event_id=eq.'+EVENT+'&select=*&order=created_at.desc',{headers:sbH()})
+// ── POLLING: simple setInterval, no recursion ──
+setInterval(function(){
+  fetch(SB+'/rest/v1/fotos?event_id=eq.'+EVENT+'&select=id,processed,scanned,storage_path,result_path&order=created_at.desc',{headers:sbH()})
     .then(function(r){return r.json()})
     .then(function(data){
-      H('wt',data.length);
-      H('wd',data.filter(function(f){return f.processed}).length);
-      // Auto-reset when guest scans
-      if(E.page==='pq' && E.foto){
-        var cur=data.find(function(f){return f.id===E.foto.id});
+      if(!Array.isArray(data))return;
+      // Update stats
+      document.getElementById('wt').textContent=data.length;
+      document.getElementById('wd').textContent=data.filter(function(f){return f.processed}).length;
+
+      // Auto-reset: if showing QR and guest scanned → go back to wait
+      if(currentPage==='pq' && currentFoto){
+        var cur=data.find(function(f){return f.id===currentFoto.id});
         if(cur && cur.scanned){
-          setTimeout(function(){E.foto=null;E.bgIdx=-1;E.lastId=null;go('pw')},2000);
+          setTimeout(function(){
+            currentFoto=null; currentBg=-1; lastShownId=null; isProcessing=false;
+            goPage('pw');
+          },2000);
         }
       }
-      if(E.page!=='pw'){_polling=false;return}
-      var p=null;
-      for(var i=0;i<data.length;i++){if(!data[i].processed){p=data[i];break}}
-      if(p && p.id!==E.lastId){E.lastId=p.id;E.foto=p;showSelect(p)}
-    })
-    .catch(function(e){console.log('poll err',e)})
-    .finally(function(){_polling=false});
-}
 
-// SHOW SELECTION
-async function showSelect(foto){
+      // Only look for new photos when waiting
+      if(currentPage!=='pw')return;
+
+      // Find latest unprocessed photo
+      var next=null;
+      for(var i=0;i<data.length;i++){
+        if(!data[i].processed){next=data[i];break}
+      }
+
+      // Show it only if it's new and we're not already processing
+      if(next && next.id!==lastShownId && !isProcessing){
+        lastShownId=next.id;
+        currentFoto=next;
+        loadAndShowSelect(next);
+      }
+    })
+    .catch(function(){});
+}, 3000);
+
+// ── SHOW SELECTION ──
+async function loadAndShowSelect(foto){
   var url=SB+'/storage/v1/object/public/'+BUCKET+'/'+foto.storage_path;
+
   // Detect orientation
-  var res=await fetch(url);
-  var blob=await res.blob();
+  var blob=await fetch(url).then(function(r){return r.blob()});
   var orient=await new Promise(function(resolve){
     var img=new Image();
     img.onload=function(){URL.revokeObjectURL(img.src);resolve(img.width>=img.height?'horizontal':'vertical')};
     img.onerror=function(){resolve('horizontal')};
     img.src=URL.createObjectURL(blob);
   });
-  E.orient=orient; E.bgIdx=-1;
+  currentOrient=orient;
+  currentBg=-1;
 
-  // Mark processed in DB
+  // Mark as processed in DB (so polling doesn't pick it up again)
   fetch(SB+'/rest/v1/fotos?id=eq.'+foto.id,{
-    method:'PATCH',headers:Object.assign({},sbH(),{'Content-Type':'application/json','Prefer':'return=minimal'}),
+    method:'PATCH',
+    headers:Object.assign({},sbH(),{'Content-Type':'application/json','Prefer':'return=minimal'}),
     body:JSON.stringify({processed:true})
   }).catch(function(){});
 
   if(orient==='horizontal'){
     document.getElementById('ph').src=url;
-    renderH();
+    renderFondosH();
     var b=document.getElementById('bh');
     b.textContent='Selecciona un fondo para continuar';
     b.disabled=true;
-    go('sh');
-  } else {
+    goPage('sh');
+  }else{
     document.getElementById('pv').src=url;
-    renderV();
+    renderFondosV();
     var b=document.getElementById('bv');
     b.textContent='Selecciona un fondo';
     b.disabled=true;
-    go('sv');
+    goPage('sv');
   }
 }
 
-function renderH(){
-  var g=document.getElementById('fh'); g.innerHTML='';
+function renderFondosH(){
+  var g=document.getElementById('fh');g.innerHTML='';
   FONDOS.forEach(function(f,i){
     var c=document.createElement('div');
     c.className='bgc';
     c.onclick=function(){
       document.querySelectorAll('#fh .bgc').forEach(function(x){x.classList.remove('sel')});
-      c.classList.add('sel'); E.bgIdx=i;
+      c.classList.add('sel');currentBg=i;
       var b=document.getElementById('bh');
-      b.textContent='Confirmar — '+f.n; b.disabled=false;
+      b.textContent='Confirmar — '+f.n;b.disabled=false;
     };
-    c.innerHTML='<img class="bgi" src="'+f.h+'" alt="'+f.n+'"><div class="bgn">'+f.n+'</div>';
+    c.innerHTML='<img src="'+f.h+'" alt="'+f.n+'"><div class="bgcn">'+f.n+'</div>';
     g.appendChild(c);
   });
 }
 
-function renderV(){
-  var g=document.getElementById('fv'); g.innerHTML='';
+function renderFondosV(){
+  var g=document.getElementById('fv');g.innerHTML='';
   FONDOS.forEach(function(f,i){
     var c=document.createElement('div');
     c.className='bgcv';
     c.onclick=function(){
       document.querySelectorAll('#fv .bgcv').forEach(function(x){x.classList.remove('sel')});
-      c.classList.add('sel'); E.bgIdx=i;
+      c.classList.add('sel');currentBg=i;
       var b=document.getElementById('bv');
-      b.textContent='Confirmar — '+f.n; b.disabled=false;
+      b.textContent='Confirmar — '+f.n;b.disabled=false;
     };
-    c.innerHTML='<img class="bgiv" src="'+f.h+'" alt="'+f.n+'"><div class="bgnv">'+f.n+'</div>';
+    c.innerHTML='<img src="'+f.h+'" alt="'+f.n+'"><div class="bgcvn">'+f.n+'</div>';
     g.appendChild(c);
   });
 }
 
+// ── CONFIRM & PROCESS ──
 function confirmar(){
-  if(E.bgIdx<0||!E.foto) return;
-  go('pp');
+  if(currentBg<0||!currentFoto||isProcessing)return;
+  isProcessing=true;
+  goPage('pp');
   procesar();
 }
 
 function prog(pct,txt){
   document.getElementById('pfill').style.width=pct+'%';
-  if(txt) document.getElementById('plbl').textContent=txt;
+  if(txt)document.getElementById('plbl').textContent=txt;
 }
 
-var _procesando = false;
 async function procesar(){
-  if(_procesando){console.log('Ya procesando, ignorando');return}
-  _procesando = true;
   try{
     prog(10,'Descargando fotografía...');
-    var url=SB+'/storage/v1/object/public/'+BUCKET+'/'+E.foto.storage_path;
-    var res=await fetch(url);
-    var blob=await res.blob();
+    var fotoUrl=SB+'/storage/v1/object/public/'+BUCKET+'/'+currentFoto.storage_path;
+    var blob=await fetch(fotoUrl).then(function(r){return r.blob()});
 
     prog(30,'Procesando con Photoroom AI...');
-    var f=FONDOS[E.bgIdx];
-    var bgUrl=E.orient==='vertical'?f.v:f.h;
+    var f=FONDOS[currentBg];
+    var bgUrl=currentOrient==='vertical'?f.v:f.h;
     var fd=new FormData();
     fd.append('image_file',blob,'photo.jpg');
     fd.append('background_url',bgUrl);
-    fd.append('orientation',E.orient);
+    fd.append('orientation',currentOrient);
 
-    var pr=await fetch(PR,{method:'POST',body:fd});
-    if(!pr.ok){var e=await pr.text();throw new Error(e)}
+    var pr=await fetch('/api/process-photo',{method:'POST',body:fd});
+    if(!pr.ok){var e=await pr.text();throw new Error('Photoroom: '+pr.status+' '+e)}
     var resultBlob=await pr.blob();
 
     prog(75,'Guardando resultado...');
-    // Save processed image to Supabase — guest will download directly
-    var path=EVENT+'/processed/'+E.foto.id+'_result.png';
-    await fetch(SB+'/storage/v1/object/'+BUCKET+'/'+path,{
+    var path=EVENT+'/processed/'+currentFoto.id+'_result.png';
+    var up=await fetch(SB+'/storage/v1/object/'+BUCKET+'/'+path,{
       method:'POST',
       headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'image/png','x-upsert':'true'},
       body:resultBlob
     });
+    if(!up.ok)throw new Error('Storage upload failed: '+up.status);
 
-    // Update DB with result path and bg index
-    await fetch(SB+'/rest/v1/fotos?id=eq.'+E.foto.id,{
+    // Save result_path to DB
+    await fetch(SB+'/rest/v1/fotos?id=eq.'+currentFoto.id,{
       method:'PATCH',
       headers:Object.assign({},sbH(),{'Content-Type':'application/json','Prefer':'return=minimal'}),
-      body:JSON.stringify({selected_bg:E.bgIdx,result_path:path})
+      body:JSON.stringify({selected_bg:currentBg,result_path:path})
     });
 
     prog(100,'¡Lista!');
-    var guestLink=GUEST+'?foto='+E.foto.id;
-    setTimeout(function(){mostrarQR(guestLink)},400);
+    setTimeout(function(){
+      var guestLink=GUEST+'?foto='+currentFoto.id;
+      var el=document.getElementById('qr');
+      el.innerHTML='';
+      new QRCode(el,{text:guestLink,width:280,height:280,colorDark:'#0d0d0b',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+      goPage('pq');
+    },400);
 
   }catch(e){
-    console.error(e);
-    alert('Error: '+e.message+'\nIntenta de nuevo.');
-    go(E.orient==='vertical'?'sv':'sh');
-  } finally {
-    _procesando = false;
+    console.error('Error procesando:',e);
+    alert('Error: '+e.message+'\n\nIntenta de nuevo.');
+    isProcessing=false;
+    goPage(currentOrient==='vertical'?'sv':'sh');
   }
 }
 
-function mostrarQR(url){
-  var el=document.getElementById('qr');
-  el.innerHTML='';
-  new QRCode(el,{text:url,width:280,height:280,colorDark:'#0d0d0b',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
-  go('pq');
-}
-
-// INIT — poll every 4 seconds with setInterval
-go('pw');
-poll(); // immediate first call
-setInterval(poll, 4000);
+// Start
+goPage('pw');
 </script>
 </body>
 </html>
