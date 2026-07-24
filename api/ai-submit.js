@@ -17,7 +17,8 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const FAL_KEY = process.env.FAL_KEY;
+  // .trim() elimina espacios y saltos de linea invisibles que se cuelan al copiar la clave
+  const FAL_KEY = (process.env.FAL_KEY || '').trim();
   if (!FAL_KEY) return res.status(500).json({ error: 'Falta FAL_KEY en Vercel' });
 
   try {
