@@ -37,7 +37,7 @@ body {
   background:#F2EDE4; padding:34px; border-radius:28px;
   box-shadow:0 20px 60px rgba(0,0,0,.5);
 }
-#qrBox canvas { display:block; width:400px !important; height:400px !important; }
+#qrBox canvas, #qrBox img { display:block; width:400px !important; height:400px !important; }
 #qrScreen .foot { margin-top:44px; font-size:24px; color:rgba(242,237,228,0.45); letter-spacing:2px; }
 </style>
 </head>
@@ -65,7 +65,8 @@ const waiting = document.getElementById('waiting');
 const qrScreen = document.getElementById('qrScreen');
 const qrBox = document.getElementById('qrBox');
 
-let currentId = null;
+let currentId = null;   // solo se fija cuando el QR YA se mostro en pantalla
+let rendering = false;  // evita intentos dobles mientras se dibuja
 
 function showWaiting() {
   waiting.classList.add('active');
@@ -73,17 +74,48 @@ function showWaiting() {
   currentId = null;
 }
 
-function showQR(fotoId) {
+// Se llama UNICAMENTE cuando el QR quedo visible
+function marcarMostrado(fotoId) {
   currentId = fotoId;
+  rendering = false;
+  waiting.classList.remove('active');
+  qrScreen.classList.add('active');
+}
+
+// Plan B: genera el QR como imagen si la libreria principal fallo
+function showQRFallback(url, fotoId) {
+  const img = document.createElement('img');
+  img.alt = 'Codigo QR';
+  img.onload = function () { marcarMostrado(fotoId); };
+  img.onerror = function () { rendering = false; }; // reintenta en el siguiente ciclo
+  img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=10&color=1B1C1C&bgcolor=F2EDE4&data=' + encodeURIComponent(url);
   qrBox.innerHTML = '';
+  qrBox.appendChild(img);
+}
+
+function showQR(fotoId) {
+  if (rendering) return;
+  rendering = true;
+
   const url = window.location.origin + '/invitado.html?id=' + fotoId;
+
+  // Si la libreria de QR no cargo, usar el plan B directamente
+  if (typeof QRCode === 'undefined') {
+    showQRFallback(url, fotoId);
+    return;
+  }
+
   QRCode.toCanvas(url, { width: 400, margin: 1,
     color: { dark: '#1B1C1C', light: '#F2EDE4' } },
     function (err, canvas) {
-      if (err) { console.error(err); return; }
+      if (err || !canvas) {
+        console.error('QR canvas fallo, usando plan B:', err);
+        showQRFallback(url, fotoId);
+        return;
+      }
+      qrBox.innerHTML = '';
       qrBox.appendChild(canvas);
-      waiting.classList.remove('active');
-      qrScreen.classList.add('active');
+      marcarMostrado(fotoId);
     });
 }
 
@@ -107,6 +139,7 @@ async function revisar() {
 
   } catch (e) {
     console.error('Error al revisar:', e);
+    rendering = false;
   }
 }
 
