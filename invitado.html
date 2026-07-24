@@ -36,6 +36,7 @@ body {
 }
 .btn-main { background:#C9A24B; color:#1B1C1C; }
 .btn-alt { background:transparent; color:#F2EDE4; border:1.5px solid rgba(242,237,228,0.3); }
+.btn:disabled { opacity:.55; }
 
 .loading, .error { text-align:center; padding:70px 20px; }
 .loading .spin { width:40px; height:40px; border:3px solid rgba(201,162,75,0.25); border-top-color:#C9A24B; border-radius:50%; margin:0 auto 20px; animation:spin .9s linear infinite; }
@@ -94,6 +95,7 @@ const contentEl = document.getElementById('content');
 const errorEl = document.getElementById('error');
 const aiPending = document.getElementById('aiPending');
 const aiCard = document.getElementById('aiCard');
+const btnGuardar = document.getElementById('btnGuardar');
 
 let originalUrl = null;
 let iaUrl = null;
@@ -189,18 +191,57 @@ function mostrarError() {
   errorEl.style.display = 'block';
 }
 
+// Descarga las imagenes como archivos reales
+async function obtenerArchivos() {
+  const files = [];
+  const r1 = await fetch(originalUrl);
+  const b1 = await r1.blob();
+  const ext1 = (b1.type === 'image/png') ? 'png' : 'jpg';
+  files.push(new File([b1], 'un-instante-eterno-1.' + ext1, { type: b1.type || 'image/jpeg' }));
+  if (iaUrl) {
+    const r2 = await fetch(iaUrl);
+    const b2 = await r2.blob();
+    const ext2 = (b2.type === 'image/png') ? 'png' : 'jpg';
+    files.push(new File([b2], 'un-instante-eterno-2.' + ext2, { type: b2.type || 'image/png' }));
+  }
+  return files;
+}
+
+function descargarArchivo(file) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(file);
+  a.download = file.name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 5000);
+}
+
 document.getElementById('btnGuardar').addEventListener('click', async function() {
-  const urls = [originalUrl];
-  if (iaUrl) urls.push(iaUrl);
-  for (let i = 0; i < urls.length; i++) {
-    const a = document.createElement('a');
-    a.href = urls[i];
-    a.download = 'un-instante-eterno-' + (i+1) + '.png';
-    a.target = '_blank';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    await new Promise(function(r){ setTimeout(r, 600); });
+  btnGuardar.disabled = true;
+  const original = btnGuardar.textContent;
+  btnGuardar.textContent = 'Preparando...';
+  try {
+    const files = await obtenerArchivos();
+
+    // En iPhone/iPad: abrir el menu nativo, donde aparece "Guardar imagen"
+    if (navigator.canShare && navigator.canShare({ files: files })) {
+      await navigator.share({ files: files, title: 'Un Instante Eterno' });
+    } else {
+      // Android / computadora: descarga directa
+      for (let i = 0; i < files.length; i++) {
+        descargarArchivo(files[i]);
+        await new Promise(function(r){ setTimeout(r, 600); });
+      }
+    }
+  } catch (e) {
+    // Si cancelo el menu, no pasa nada. Si fallo la descarga, dar instruccion manual.
+    if (e && e.name !== 'AbortError') {
+      alert('Manten presionada cada foto y elige "Guardar imagen".');
+    }
+  } finally {
+    btnGuardar.disabled = false;
+    btnGuardar.textContent = original;
   }
 });
 
@@ -210,13 +251,7 @@ document.getElementById('btnCompartir').addEventListener('click', async function
     return;
   }
   try {
-    const files = [];
-    const r1 = await fetch(originalUrl);
-    files.push(new File([await r1.blob()], 'foto.jpg', { type: 'image/jpeg' }));
-    if (iaUrl) {
-      const r2 = await fetch(iaUrl);
-      files.push(new File([await r2.blob()], 'version-artistica.png', { type: 'image/png' }));
-    }
+    const files = await obtenerArchivos();
     await navigator.share({ files: files, title: 'Un Instante Eterno' });
   } catch (e) { /* cancelado */ }
 });
