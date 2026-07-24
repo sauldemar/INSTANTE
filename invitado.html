@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Tu foto · Un Instante Eterno</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background:#1B1C1C; color:#F2EDE4; min-height:100vh; padding:24px 18px 40px;
+}
+.wrap { max-width:520px; margin:0 auto; }
+.brand { text-align:center; font-size:16px; letter-spacing:5px; color:#C9A24B; margin-bottom:26px; }
+
+.card { background:#252625; border-radius:18px; padding:16px; margin-bottom:20px; }
+.card h2 { font-size:15px; font-weight:500; letter-spacing:1px; color:rgba(242,237,228,0.6); margin-bottom:12px; text-align:center; }
+.card img { width:100%; border-radius:12px; display:block; }
+
+.pending {
+  background:#252625; border-radius:18px; padding:40px 20px; text-align:center; margin-bottom:20px;
+}
+.pending .spin {
+  width:34px; height:34px; border:3px solid rgba(201,162,75,0.25);
+  border-top-color:#C9A24B; border-radius:50%; margin:0 auto 18px;
+  animation:spin .9s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+.pending .t { font-size:16px; margin-bottom:6px; }
+.pending .s { font-size:13px; color:rgba(242,237,228,0.5); line-height:1.5; }
+
+.btn {
+  display:block; width:100%; padding:17px; border:none; border-radius:100px;
+  font-size:16px; font-weight:600; margin-bottom:12px; cursor:pointer;
+  font-family:inherit;
+}
+.btn-main { background:#C9A24B; color:#1B1C1C; }
+.btn-alt { background:transparent; color:#F2EDE4; border:1.5px solid rgba(242,237,228,0.3); }
+
+.loading, .error { text-align:center; padding:70px 20px; }
+.loading .spin { width:40px; height:40px; border:3px solid rgba(201,162,75,0.25); border-top-color:#C9A24B; border-radius:50%; margin:0 auto 20px; animation:spin .9s linear infinite; }
+.error { color:#e07a5f; }
+.foot { text-align:center; font-size:12px; color:rgba(242,237,228,0.35); margin-top:26px; letter-spacing:1px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">UN INSTANTE ETERNO</div>
+
+  <div id="loading" class="loading">
+    <div class="spin"></div>
+    <div>Cargando tu foto...</div>
+  </div>
+
+  <div id="content" style="display:none;">
+    <div class="card">
+      <h2>TU FOTO</h2>
+      <img id="fotoOriginal" alt="Tu foto">
+    </div>
+
+    <div id="aiPending" class="pending">
+      <div class="spin"></div>
+      <div class="t">Creando tu version artistica</div>
+      <div class="s">Estara lista en menos de un minuto.<br>Puedes guardar esta pagina y volver.</div>
+    </div>
+
+    <div id="aiCard" class="card" style="display:none;">
+      <h2>TU VERSION ARTISTICA</h2>
+      <img id="fotoIA" alt="Version artistica">
+    </div>
+
+    <button class="btn btn-main" id="btnGuardar">Guardar fotos</button>
+    <button class="btn btn-alt" id="btnCompartir">Compartir</button>
+
+    <div class="foot">@uninstante_eterno</div>
+  </div>
+
+  <div id="error" class="error" style="display:none;">
+    <p>No pudimos encontrar tu foto.</p>
+    <p style="font-size:13px; margin-top:10px; color:rgba(242,237,228,0.5);">Verifica el codigo QR e intenta de nuevo.</p>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://egvtxhtfgkwfyirklkbn.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVndnR4aHRmZ2t3Znlpcmtsa2JuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDM4NTksImV4cCI6MjA5NDcxOTg1OX0.kQ5q1nKAQ847Pm_7jsZ9-NVGKg3xRoqGpUC-PasQqQc';
+const BUCKET = 'fotos-eventos';
+
+const params = new URLSearchParams(window.location.search);
+const fotoId = params.get('id');
+
+const loadingEl = document.getElementById('loading');
+const contentEl = document.getElementById('content');
+const errorEl = document.getElementById('error');
+const aiPending = document.getElementById('aiPending');
+const aiCard = document.getElementById('aiCard');
+
+let originalUrl = null;
+let iaUrl = null;
+let pollTimer = null;
+
+function publicUrl(path) {
+  return SUPABASE_URL + '/storage/v1/object/public/' + BUCKET + '/' + encodeURI(path);
+}
+
+async function cargar() {
+  if (!fotoId) { mostrarError(); return; }
+
+  try {
+    const res = await fetch(
+      SUPABASE_URL + '/rest/v1/fotos?id=eq.' + fotoId + '&select=id,storage_path,ai_path,ai_status',
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+    );
+    const rows = await res.json();
+    if (!rows || rows.length === 0) { mostrarError(); return; }
+
+    const foto = rows[0];
+    originalUrl = publicUrl(foto.storage_path);
+    document.getElementById('fotoOriginal').src = originalUrl;
+
+    loadingEl.style.display = 'none';
+    contentEl.style.display = 'block';
+
+    // Marcar como escaneada para que el iPad libere la pantalla
+    fetch(SUPABASE_URL + '/rest/v1/fotos?id=eq.' + fotoId, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ scanned: true })
+    }).catch(function(){});
+
+    if (foto.ai_status === 'done' && foto.ai_path) {
+      mostrarIA(foto.ai_path);
+    } else if (foto.ai_status === 'failed') {
+      aiPending.style.display = 'none';
+    } else {
+      iniciarPolling();
+    }
+
+  } catch (e) {
+    mostrarError();
+  }
+}
+
+function mostrarIA(path) {
+  iaUrl = publicUrl(path);
+  document.getElementById('fotoIA').src = iaUrl;
+  aiPending.style.display = 'none';
+  aiCard.style.display = 'block';
+  if (pollTimer) clearInterval(pollTimer);
+}
+
+function iniciarPolling() {
+  let intentos = 0;
+  pollTimer = setInterval(async function() {
+    intentos++;
+    if (intentos > 40) { // ~3.5 minutos
+      clearInterval(pollTimer);
+      aiPending.querySelector('.t').textContent = 'Version artistica no disponible';
+      aiPending.querySelector('.s').textContent = 'Tu foto original si esta lista para guardar.';
+      aiPending.querySelector('.spin').style.display = 'none';
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/ai-check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fotoId: fotoId })
+      });
+      const data = await res.json();
+
+      if (data.status === 'done' && data.ai_path) {
+        mostrarIA(data.ai_path);
+      } else if (data.status === 'failed') {
+        clearInterval(pollTimer);
+        aiPending.style.display = 'none';
+      }
+    } catch (e) { /* seguir intentando */ }
+  }, 5000);
+}
+
+function mostrarError() {
+  loadingEl.style.display = 'none';
+  errorEl.style.display = 'block';
+}
+
+document.getElementById('btnGuardar').addEventListener('click', async function() {
+  const urls = [originalUrl];
+  if (iaUrl) urls.push(iaUrl);
+  for (let i = 0; i < urls.length; i++) {
+    const a = document.createElement('a');
+    a.href = urls[i];
+    a.download = 'un-instante-eterno-' + (i+1) + '.png';
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    await new Promise(function(r){ setTimeout(r, 600); });
+  }
+});
+
+document.getElementById('btnCompartir').addEventListener('click', async function() {
+  if (!navigator.share) {
+    alert('Manten presionada la foto para guardarla.');
+    return;
+  }
+  try {
+    const files = [];
+    const r1 = await fetch(originalUrl);
+    files.push(new File([await r1.blob()], 'foto.jpg', { type: 'image/jpeg' }));
+    if (iaUrl) {
+      const r2 = await fetch(iaUrl);
+      files.push(new File([await r2.blob()], 'version-artistica.png', { type: 'image/png' }));
+    }
+    await navigator.share({ files: files, title: 'Un Instante Eterno' });
+  } catch (e) { /* cancelado */ }
+});
+
+cargar();
+</script>
+</body>
+</html>

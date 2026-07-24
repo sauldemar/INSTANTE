@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un Instante Eterno</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; overflow:hidden; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background:#1B1C1C; color:#F2EDE4;
+  display:flex; align-items:center; justify-content:center;
+  -webkit-user-select:none; user-select:none;
+}
+
+/* Pantalla de espera */
+.screen { display:none; width:100%; height:100%; align-items:center; justify-content:center; flex-direction:column; text-align:center; padding:40px; }
+.screen.active { display:flex; }
+
+#waiting .logo { font-size:64px; letter-spacing:8px; margin-bottom:20px; font-weight:300; }
+#waiting .logo span { color:#C9A24B; }
+#waiting .msg { font-size:30px; color:rgba(242,237,228,0.55); letter-spacing:2px; }
+#waiting .pulse {
+  width:14px; height:14px; border-radius:50%; background:#C9A24B;
+  margin-top:44px; animation:pulse 1.6s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:.3; transform:scale(1);} 50%{opacity:1; transform:scale(1.3);} }
+
+/* Pantalla del QR */
+#qrScreen { gap:0; }
+#qrScreen .title { font-size:52px; margin-bottom:16px; font-weight:300; letter-spacing:3px; }
+#qrScreen .title span { color:#C9A24B; }
+#qrScreen .sub { font-size:28px; color:rgba(242,237,228,0.6); margin-bottom:48px; letter-spacing:1px; }
+#qrBox {
+  background:#F2EDE4; padding:34px; border-radius:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+#qrBox canvas { display:block; width:400px !important; height:400px !important; }
+#qrScreen .foot { margin-top:44px; font-size:24px; color:rgba(242,237,228,0.45); letter-spacing:2px; }
+</style>
+</head>
+<body>
+
+<div class="screen active" id="waiting">
+  <div class="logo">UN INSTANTE <span>ETERNO</span></div>
+  <div class="msg">Esperando tu foto...</div>
+  <div class="pulse"></div>
+</div>
+
+<div class="screen" id="qrScreen">
+  <div class="title">Tu foto esta <span>lista</span></div>
+  <div class="sub">Escanea el codigo con tu celular</div>
+  <div id="qrBox"></div>
+  <div class="foot">Un Instante Eterno</div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://egvtxhtfgkwfyirklkbn.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVndnR4aHRmZ2t3Znlpcmtsa2JuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDM4NTksImV4cCI6MjA5NDcxOTg1OX0.kQ5q1nKAQ847Pm_7jsZ9-NVGKg3xRoqGpUC-PasQqQc';
+const EVENT_ID = 'esmeralda-erwin-2026';
+
+const waiting = document.getElementById('waiting');
+const qrScreen = document.getElementById('qrScreen');
+const qrBox = document.getElementById('qrBox');
+
+let currentId = null;
+
+function showWaiting() {
+  waiting.classList.add('active');
+  qrScreen.classList.remove('active');
+  currentId = null;
+}
+
+function showQR(fotoId) {
+  currentId = fotoId;
+  qrBox.innerHTML = '';
+  const url = window.location.origin + '/invitado.html?id=' + fotoId;
+  QRCode.toCanvas(url, { width: 400, margin: 1,
+    color: { dark: '#1B1C1C', light: '#F2EDE4' } },
+    function (err, canvas) {
+      if (err) { console.error(err); return; }
+      qrBox.appendChild(canvas);
+      waiting.classList.remove('active');
+      qrScreen.classList.add('active');
+    });
+}
+
+async function revisar() {
+  try {
+    // La foto mas reciente del evento que aun no ha sido escaneada
+    const res = await fetch(
+      SUPABASE_URL + '/rest/v1/fotos?event_id=eq.' + EVENT_ID +
+      '&scanned=eq.false&select=id,scanned&order=created_at.desc&limit=1',
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+    );
+    const rows = await res.json();
+
+    if (!rows || rows.length === 0) {
+      if (currentId !== null) showWaiting();
+      return;
+    }
+
+    const foto = rows[0];
+    if (foto.id !== currentId) showQR(foto.id);
+
+  } catch (e) {
+    console.error('Error al revisar:', e);
+  }
+}
+
+setInterval(revisar, 3000);
+revisar();
+</script>
+</body>
+</html>
